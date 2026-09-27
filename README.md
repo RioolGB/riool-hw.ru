@@ -472,3 +472,5 @@ curl -X POST http://localhost:3000/api/contact \
 - Почта: riool@riool.ru
 - Telegram: [@Za_ordy](https://t.me/Za_ordy)
 - Телефон: +7 (926) 254-19-96
+
+<!-- Coolify: app g14bopdsv7iukkfdzmlweqda, автодеплой через GitHub App webhook -->
