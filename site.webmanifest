@@ -1,0 +1,33 @@
+{
+  "name": "Riool — riool-hw.ru",
+  "short_name": "Riool",
+  "description": "Веб-разработчик, создающий цифровых помощников для бизнеса",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#061f1a",
+  "theme_color": "#0a3d2e",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "images/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

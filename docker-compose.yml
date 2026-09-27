@@ -1,0 +1,84 @@
+# ==========================================================================
+# riool-hw.ru — фронтенд (nginx) + бэкенд формы обратной связи (Node.js)
+#
+# Запуск:
+#   1) cp backend/.env.example backend/.env  и заполните SMTP_PASS
+#   2) docker compose up -d --build
+#   3) получение сертификата: см. README.md, раздел «SSL-сертификат»
+#
+# Сертификаты лежат в ./deploy/certbot/conf, ACME-challenge отдаётся nginx.
+# ==========================================================================
+
+services:
+  # ---------- Фронтенд ----------
+  web:
+    image: nginx:1.27-alpine
+    container_name: riool-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Статика лендинга
+      - ./:/usr/share/nginx/html:ro
+      # Конфигурация nginx.
+      # Фрагменты в snippets/*.inc, а не conf.d/*.conf: nginx подключает все
+      # файлы conf.d/*.conf на уровне http, где директива location запрещена.
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/security-headers.inc:/etc/nginx/snippets/security-headers.inc:ro
+      - ./deploy/deny-internal.inc:/etc/nginx/snippets/deny-internal.inc:ro
+      # Сертификаты Let's Encrypt (создаются certbot-контейнером)
+      - ./deploy/certbot/conf:/etc/letsencrypt:ro
+      - ./deploy/certbot/www:/var/www/certbot:ro
+    depends_on:
+      - backend
+    networks:
+      - riool
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ---------- Бэкенд формы ----------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: riool-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    expose:
+      - "3000"
+    # Прямой доступ снаружи не нужен — наружу торчит только nginx
+    networks:
+      - riool
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ---------- Certbot: автопродление сертификата ----------
+  certbot:
+    image: certbot/certbot:latest
+    container_name: riool-certbot
+    restart: unless-stopped
+    volumes:
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    # Раз в 12 часов проверяем, не пора ли продлить сертификат
+    entrypoint: >
+      /bin/sh -c "trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet;
+        sleep 12h & wait $${!};
+      done"
+
+networks:
+  riool:
+    driver: bridge

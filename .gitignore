@@ -1,0 +1,33 @@
+# Секреты и локальное окружение
+backend/.env
+.env
+*.log
+npm-debug.log*
+
+# Node
+node_modules/
+backend/node_modules/
+npm-debug.log
+
+# package-lock.json коммитится — он нужен для воспроизводимой сборки образа
+
+# OS / редакторы
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Исходники, рабочие копии лежат в images/
+/about.jpg
+/pfoto_main.jpg
+/photo_main.jpg
+
+# Служебный документ с ТЗ (остаётся локально, в репозиторий не нужен)
+*.docx
+
+# Каталог сертификатов Let's Encrypt (создаётся автоматически)
+deploy/certbot/conf/*
+deploy/certbot/www/*
+!deploy/certbot/conf/.gitkeep
+!deploy/certbot/www/.gitkeep
