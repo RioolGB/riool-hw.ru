@@ -1,0 +1,38 @@
+# Файлы и каталоги, которые не нужны для сборки контейнера.
+# Уменьшают контекст сборки и не дают утечь секреты в слой.
+
+# Секреты — важно, .env не должен попасть в образ
+.env
+backend/.env
+**/.env
+
+# Git и CI
+.git
+.gitignore
+.github
+
+# Локальное окружение
+node_modules
+**/node_modules
+npm-debug.log*
+*.log
+
+# Внутренние файлы проекта
+deploy/certbot
+README.md
+*.docx
+Dockerfile
+.dockerignore
+
+# Копии конфигурации для внешнего reverse-proxy (Coolify использует Traefik,
+# а не этот nginx) — они не нужны внутри контейнера
+deploy/nginx.conf
+deploy/deny-internal.inc
+deploy/security-headers.inc
+
+# Редакторы и ОС
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.swp

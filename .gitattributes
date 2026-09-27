@@ -1,0 +1,31 @@
+# Нормализация переводов строк.
+#
+# Зачем: проект собирается на Linux-хосте (Coolify), а рабочая копия здесь
+# Windows. С CRLF шелл-скрипт entrypoint.sh не запустится:
+#   /usr/local/bin/entrypoint.sh: /bin/sh^M: bad interpreter
+# Поэтому в репозитории храним LF, а локальная проверка git не будет
+# превращать файлы обратно в CRLF при повторном добавлении.
+
+* text=auto eol=lf
+
+# Скрипты и конфиги, где перевод строки критичен
+*.sh    text eol=lf
+Dockerfile       text eol=lf
+*.conf           text eol=lf
+*.inc            text eol=lf
+*.yml            text eol=lf
+*.yaml           text eol=lf
+*.env             text eol=lf
+*.example         text eol=lf
+
+# Изображения и прочее — хранить байт в байт
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.ico   binary
+*.webp  binary
+*.avif  binary
+*.woff  binary
+*.woff2 binary
+*.pdf   binary
+*.docx  binary
