@@ -29,7 +29,7 @@ COPY backend/package.json ./package.json
 COPY backend/server.js ./server.js
 
 # --- Статика лендинга ---
-COPY index.html portfolio.html site.webmanifest /var/www/html/
+COPY index.html portfolio.html useful.html site.webmanifest /var/www/html/
 COPY css /var/www/html/css
 COPY js /var/www/html/js
 COPY images /var/www/html/images
