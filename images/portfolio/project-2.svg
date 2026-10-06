@@ -1,26 +1,57 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 620" width="700" height="620" role="img" aria-label="Placeholder preview">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1897 928" width="1897" height="928" role="img" aria-label="Чат-бот ВКонтакте Business IT Day">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0a3d2e" />
       <stop offset="100%" stop-color="#061f1a" />
     </linearGradient>
-    <linearGradient id="sk" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#5eead4" />
-      <stop offset="100%" stop-color="#ffffff" />
+    <linearGradient id="ac" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#5eead4" />
     </linearGradient>
   </defs>
-  <rect width="700" height="620" fill="url(#bg)" />
-  <rect x="0" y="0" width="700" height="56" fill="#000000" opacity="0.25" />
-  <circle cx="28" cy="28" r="7" fill="#5eead4" opacity="0.55" />
-  <circle cx="50" cy="28" r="7" fill="#ffffff" opacity="0.22" />
-  <circle cx="72" cy="28" r="7" fill="#ffffff" opacity="0.22" />
-  <rect x="104" y="18" width="220" height="20" rx="10" fill="#ffffff" opacity="0.10" />
-    <rect x="80" y="116" width="220" height="30" rx="8" fill="url(#sk)" opacity="0,1" />
-    <rect x="80" y="164" width="300" height="14" rx="8" fill="url(#sk)" opacity="0,22" />
-    <rect x="80" y="196" width="260" height="14" rx="8" fill="url(#sk)" opacity="0,16" />
-    <rect x="80" y="236" width="540" height="150" rx="8" fill="url(#sk)" opacity="0,12" />
-    <rect x="80" y="410" width="160" height="80" rx="8" fill="url(#sk)" opacity="0,1" />
-    <rect x="260" y="410" width="160" height="80" rx="8" fill="url(#sk)" opacity="0,2" />
-    <rect x="440" y="410" width="180" height="80" rx="8" fill="url(#sk)" opacity="0,16" />
-    <rect x="80" y="516" width="300" height="16" rx="8" fill="url(#sk)" opacity="0,12" />
-  </svg>
+
+  <rect width="1897" height="928" fill="url(#bg)" />
+
+  <!-- Окно чата -->
+  <rect x="410" y="52" width="1077" height="824" rx="26" fill="#0e4635" stroke="rgba(125,240,196,0.18)" />
+  <rect x="410" y="52" width="1077" height="92" rx="26" fill="rgba(0,0,0,0.18)" />
+
+  <!-- Аватар и имя -->
+  <circle cx="488" cy="98" r="24" fill="url(#ac)" />
+  <text x="488" y="105" text-anchor="middle" font-family="Inter, system-ui, Arial, sans-serif" font-size="21" font-weight="700" fill="#04231a">И</text>
+  <circle cx="506" cy="116" r="7" fill="#34d399" stroke="#0e4635" stroke-width="3" />
+  <text x="530" y="102" font-family="Inter, system-ui, Arial, sans-serif" font-size="21" font-weight="700" fill="#f2f7f5">Игорь</text>
+  <text x="530" y="124" font-family="Inter, system-ui, Arial, sans-serif" font-size="14" fill="#a9c4bb">Консультант · Business IT Day</text>
+
+  <rect x="410" y="144" width="1077" height="1" fill="rgba(125,240,196,0.12)" />
+
+  <text x="948" y="180" text-anchor="middle" font-family="Inter, system-ui, Arial, sans-serif" font-size="12" fill="#7e9a91">Сегодня</text>
+
+  <!-- Сообщения -->
+  <rect x="452" y="204" width="400" height="58" rx="16" fill="rgba(255,255,255,0.08)" />
+  <text x="474" y="230" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">Привет! Я Игорь, консультант</text>
+  <text x="474" y="252" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">Business IT Day 👋</text>
+
+  <rect x="1050" y="290" width="310" height="58" rx="16" fill="url(#ac)" />
+  <text x="1070" y="316" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" font-weight="600" fill="#04231a">Хочу зарегистрироваться</text>
+  <text x="1070" y="338" font-family="Inter, system-ui, Arial, sans-serif" font-size="13" fill="#0a3d2e">21:05</text>
+
+  <rect x="452" y="376" width="476" height="116" rx="16" fill="rgba(255,255,255,0.08)" />
+  <text x="474" y="404" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">Отлично! Напиши мне: ФИО, email,</text>
+  <text x="474" y="430" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">телефон и компанию — соберу</text>
+  <text x="474" y="456" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">и запишу тебя на конференцию.</text>
+  <text x="474" y="482" font-family="Inter, system-ui, Arial, sans-serif" font-size="13" fill="#7e9a91">21:05</text>
+
+  <rect x="452" y="520" width="330" height="50" rx="16" fill="rgba(255,255,255,0.08)" />
+  <text x="474" y="546" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#f2f7f5">Спасибо, Алексей! Ты в списке ✅</text>
+  <text x="474" y="568" font-family="Inter, system-ui, Arial, sans-serif" font-size="13" fill="#7e9a91">21:06</text>
+
+  <!-- Подсказка меню -->
+  <text x="948" y="646" text-anchor="middle" font-family="Inter, system-ui, Arial, sans-serif" font-size="14" fill="#7e9a91">Меню: Регистрация · Программа · Напоминания</text>
+
+  <!-- Поле ввода -->
+  <rect x="452" y="686" width="1030" height="64" rx="32" fill="rgba(255,255,255,0.06)" />
+  <text x="486" y="724" font-family="Inter, system-ui, Arial, sans-serif" font-size="17" fill="#7e9a91">Сообщение…</text>
+  <circle cx="1428" cy="718" r="25" fill="url(#ac)" />
+  <path d="M1418 718l7 7 12-12M1418 718l7-7 12 12" fill="none" stroke="#04231a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
