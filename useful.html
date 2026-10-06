@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a3d2e">
+  <title>Полезное — в работе</title>
+  <meta name="description" content="Раздел «Полезное» пока в разработке. Скоро здесь появятся полезные инструменты.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- ============ Icons ============ -->
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="images/favicon-180.png">
+  <link rel="manifest" href="site.webmanifest">
+
+  <!-- ============ Fonts ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.remove('no-js');</script>
+
+  <!-- Стили только для заглушки. Удалить вместе со страницей, когда появится tools.riool-hw.ru -->
+  <style>
+    .useful {
+      min-height: calc(100vh - var(--header-h));
+      display: grid;
+      place-items: center;
+      padding-block: clamp(48px, 8vw, 96px);
+    }
+    .useful__card {
+      width: min(560px, 100%);
+      padding: clamp(32px, 5vw, 56px);
+      text-align: center;
+      background: linear-gradient(170deg, var(--bg-2), var(--bg-0) 70%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .useful__icon {
+      display: grid;
+      place-items: center;
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 24px;
+      border-radius: 20px;
+      background: linear-gradient(140deg, var(--bg-3), var(--bg-1));
+      border: 1px solid var(--border-strong);
+      color: var(--accent-light);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .useful__icon svg { width: 34px; height: 34px; }
+    .useful__title { font-size: clamp(26px, 4vw, 38px); color: var(--text); }
+    .useful__note { margin-top: 14px; font-size: 18px; color: var(--text-muted); }
+    .useful__actions { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header is-stuck" id="top">
+    <div class="container header__inner">
+      <a class="logo" href="index.html" aria-label="Riool — на главную">
+        <span class="logo__mark" aria-hidden="true">R</span>
+        <span class="logo__text">Riool</span>
+      </a>
+
+      <nav class="nav" id="primary-nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html#about">Обо мне</a></li>
+          <li><a class="nav__link" href="index.html#portfolio">Портфолио</a></li>
+          <li><a class="nav__link is-active" href="useful.html" aria-current="page">Полезное</a></li>
+          <li><a class="nav__link" href="index.html#contacts">Контакты</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm nav__cta" href="index.html#contacts">Связаться со мной</a>
+      </nav>
+
+      <button class="burger" type="button" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="primary-nav">
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ================= ЗАГЛУШКА «ПОЛЕЗНОЕ» ================= -->
+    <section class="useful">
+      <div class="container">
+        <div class="useful__card">
+          <div class="useful__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <p class="section__eyebrow">Полезное</p>
+          <h1 class="useful__title">Раздел в работе</h1>
+          <p class="useful__note">Скоро здесь появится что-то интересное.</p>
+          <div class="useful__actions">
+            <a class="btn btn--primary" href="index.html" onclick="if (history.length > 1) { event.preventDefault(); history.back(); }">Вернуться назад</a>
+            <a class="btn btn--ghost" href="index.html">На главную</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <p class="footer__copy">© 2026 Вениамин Семериков (Riool). Все права защищены.</p>
+      <ul class="footer__contacts">
+        <li><a href="tel:+79262541996">+7 (926) 254-19-96</a></li>
+        <li><a href="mailto:riool@riool.ru">riool@riool.ru</a></li>
+        <li><a href="https://t.me/Za_ordy" target="_blank" rel="noopener noreferrer">@Za_ordy</a></li>
+        <li><a href="useful.html">Полезное</a></li>
+      </ul>
+      <a class="footer__to-top" href="#top" aria-label="Наверх">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
