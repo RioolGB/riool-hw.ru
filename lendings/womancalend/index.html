@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Твой женский код — практикум женского здоровья</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== БЛОК 1: ПЕРВЫЙ ЭКРАН ===== -->
+  <header class="hero">
+    <div class="hero__nav">
+      <a href="#" class="logo">🌸 Твой женский код</a>
+      <a href="#signup" class="btn btn--small">Записаться</a>
+    </div>
+    <div class="hero__inner container">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Практикум женского здоровья · 4 недели</p>
+        <h1 class="hero__title">Перестань терпеть ПМС, отеки и хроническую усталость. Настрой свой гормональный фон и верни себе энергию за 4 недели — без таблеток и жестких диет.</h1>
+        <p class="hero__subtitle">Освой систему «Гормональный интеллект» — пошаговый практикум для женщин, которые хотят чувствовать себя живой, лёгкой и наполненной в каждый день своего цикла.</p>
+        <a href="#signup" class="btn btn--large js-open-modal">Хочу вернуть себе энергию</a>
+      </div>
+      <div class="hero__media">
+        <div class="hero__photo" role="img" aria-label="Счастливая и энергичная женщина"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== БЛОК 2: БОЛИ ЦА ===== -->
+  <section class="pains">
+    <div class="container">
+      <h2 class="section-title">Знакомо ли тебе это состояние?</h2>
+      <div class="pains__grid">
+        <article class="card card--pain">
+          <div class="card__icon">😩</div>
+          <h3>«Я просыпаюсь уже уставшей»</h3>
+          <p>За неделю до месячных я превращаюсь в плаксивую и раздражительную версию себя. Меня трясет от эмоций, а тяга к сладкому и соленому становится просто неконтролируемой.</p>
+        </article>
+        <article class="card card--pain">
+          <div class="card__icon">⚖️</div>
+          <h3>«Врачи разводят руками»</h3>
+          <p>В женской консультации мне говорят: «Это возрастное, это от стресса, пропейте витамины». А вес стоит на месте, даже если я ем как птичка, по утрам лицо отекает, а к вечеру «гудят» ноги.</p>
+        </article>
+        <article class="card card--pain">
+          <div class="card__icon">💔</div>
+          <h3>«Я чувствую себя загнанной лошадью»</h3>
+          <p>На близость с мужем нет ни сил, ни желания. Внутри живет глухое чувство вины, что я «какая-то не такая», не могу быть энергичной мамой и идеальной женой, потому что у меня просто нет на это ресурса.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 3: РЕШЕНИЯ ===== -->
+  <section class="solutions">
+    <div class="container">
+      <h2 class="section-title">На практике мы не лечим симптомы</h2>
+      <p class="solutions__lead">На практикуме <strong>«Твой женский код»</strong> мы не лечим симптомы. Мы настраиваем систему изнутри, чтобы твое тело работало <em>на</em> тебя, а не <em>против</em> тебя.</p>
+
+      <div class="tabs">
+        <div class="tabs__nav" role="tablist">
+          <button class="tab-btn is-active" data-tab="module1" role="tab">Модуль 1</button>
+          <button class="tab-btn" data-tab="module2" role="tab">Модуль 2</button>
+          <button class="tab-btn" data-tab="module3" role="tab">Модуль 3</button>
+        </div>
+        <div class="tabs__panel is-active" id="module1" role="tabpanel">
+          <div class="tab__body">
+            <h3>Питание по фазам цикла</h3>
+            <p>Ты узнаешь, что есть в разные дни цикла, чтобы убить тягу к сладкому, убрать ПМС и перестать накапливать воду. Мы настроим твой эстроген и прогестерон через тарелку.</p>
+          </div>
+        </div>
+        <div class="tabs__panel" id="module2" role="tabpanel">
+          <div class="tab__body">
+            <h3>Кортизоловая ловушка и лишний вес</h3>
+            <p>Разберем, почему стресс блокирует похудение. Ты получишь рабочие инструменты «скорой помощи» для нервной системы, чтобы перестать заедать тревогу и наконец сдвинуть вес с мертвой точки.</p>
+          </div>
+        </div>
+        <div class="tabs__panel" id="module3" role="tabpanel">
+          <div class="tab__body">
+            <h3>Тазовое дно и либидо</h3>
+            <p>Мягкие, безопасные практики для восстановления кровотока в малом тазу. Ты вернешь себе чувствительность, желание и то самое чувство легкости в теле, которое ты, возможно, не ощущала годами.</p>
+          </div>
+        </div>
+      </div>
+
+      <details class="accordion">
+        <summary>Модуль 1: Питание по фазам цикла</summary>
+        <p>Ты узнаешь, что есть в разные дни цикла, чтобы убить тягу к сладкому, убрать ПМС и перестать накапливать воду. Мы настроим твой эстроген и прогестерон через тарелку.</p>
+      </details>
+      <details class="accordion">
+        <summary>Модуль 2: Кортизоловая ловушка и лишний вес</summary>
+        <p>Разберем, почему стресс блокирует похудение. Ты получишь рабочие инструменты «скорой помощи» для нервной системы, чтобы перестать заедать тревогу и наконец сдвинуть вес с мертвой точки.</p>
+      </details>
+      <details class="accordion">
+        <summary>Модуль 3: Тазовое дно и либидо</summary>
+        <p>Мягкие, безопасные практики для восстановления кровотока в малом тазу. Ты вернешь себе чувствительность, желание и то самое чувство легкости в теле, которое ты, возможно, не ощущала годами.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 4: CTA С ТРИГГЕРОМ СРОЧНОСТИ ===== -->
+  <section class="cta" id="signup">
+    <div class="container cta__inner">
+      <p class="cta__badge">⏰ Старт нового потока начинается уже через 3 дня!</p>
+      <div class="cta__timer" id="countdown">
+        <div class="timer__unit"><span id="days">00</span><small>дней</small></div>
+        <div class="timer__sep">:</div>
+        <div class="timer__unit"><span id="hours">00</span><small>часов</small></div>
+        <div class="timer__sep">:</div>
+        <div class="timer__unit"><span id="minutes">00</span><small>минут</small></div>
+        <div class="timer__sep">:</div>
+        <div class="timer__unit"><span id="seconds">00</span><small>секунд</small></div>
+      </div>
+      <p class="cta__seats">Количество мест ограничено: я лично проверяю домашние задания и отвечаю на вопросы в чате только в потоке до 50 человек.</p>
+      <div class="cta__warning">
+        ⚠️ <strong>Важно:</strong> После закрытия набора стоимость участия вырастет на 40%, а бонусный гайд «Аптечка женского здоровья: разбор 50 добавок» (что реально пить, а что пустая трата денег) уйдет в архив и станет недоступен. Забирай свое здоровье и энергию сейчас, пока есть свободные места.
+      </div>
+      <a href="#" class="btn btn--large btn--cta js-open-modal">Хочу вернуть себе энергию</a>
+      <p class="cta__micro">Доступ к платформе и первым урокам открывается сразу. Начни менять свое самочувствие уже сегодня.</p>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 5: ФИНАЛЬНАЯ КНОПКА ДЕЙСТВИЯ ===== -->
+  <footer class="final">
+    <div class="container final__inner">
+      <h2 class="final__title">Хочу вернуть себе энергию</h2>
+      <a href="#" class="btn btn--large js-open-modal">Записаться на практикум</a>
+      <p class="final__micro">Доступ к платформе и первым урокам открывается сразу. Начни менять свое самочувствие уже сегодня.</p>
+      <p class="final__foot">🌸 Твой женский код · 2026</p>
+    </div>
+  </footer>
+
+  <!-- ===== МОДАЛЬНОЕ ОКНО С ФОРМОЙ ===== -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal__overlay js-close-modal"></div>
+    <div class="modal__box">
+      <button class="modal__close js-close-modal" aria-label="Закрыть">&times;</button>
+      <h2 class="modal__title" id="modal-title">Запись на практикум</h2>
+      <p class="modal__sub">Оставь контакты — откроем доступ к платформе и первым урокам.</p>
+      <form id="signup-form" class="form" novalidate>
+        <div class="form__field">
+          <label for="name">Имя</label>
+          <input type="text" id="name" name="name" placeholder="Как тебя зовут" autocomplete="name">
+          <span class="form__error" data-error-for="name"></span>
+        </div>
+        <div class="form__field">
+          <label for="surname">Фамилия</label>
+          <input type="text" id="surname" name="surname" placeholder="Твоя фамилия" autocomplete="family-name">
+          <span class="form__error" data-error-for="surname"></span>
+        </div>
+        <div class="form__field">
+          <label for="email">Почта</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email">
+          <span class="form__error" data-error-for="email"></span>
+        </div>
+        <div class="form__status" id="form-status" role="alert"></div>
+        <button type="submit" class="btn btn--large form__submit">
+          <span class="form__submit-text">Отправить заявку</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

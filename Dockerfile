@@ -33,6 +33,7 @@ COPY index.html portfolio.html useful.html site.webmanifest /var/www/html/
 COPY css /var/www/html/css
 COPY js /var/www/html/js
 COPY images /var/www/html/images
+COPY lendings /var/www/html/lendings
 
 # --- Конфигурация nginx для контейнера ---
 # Заменяем основной nginx.conf целиком: /etc/nginx/http.d/ подключается
