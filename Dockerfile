@@ -1,32 +1,56 @@
 # ==========================================================================
-# Одноразовый образ для Coolify: статика лендинга + API формы в одном контейнере
+# Одноразовый образ для Coolify: статика лендинга + API формы + CycleTracker
+# (menstr) в одном контейнере.
 #
 #   docker build -t riool-hw .
 #   docker run -d -p 8080:80 -p 3000:3000 --env-file backend/.env riool-hw
 #
 # Coolify/Traefik проксирует трафик на порт 80 контейнера.
+# Внутри: nginx (80) + форма (3000) + menstr/CycleTracker (3110).
 # ==========================================================================
 
-# ---------- Stage 1: зависимости бэкенда ----------
-FROM node:20-alpine AS deps
+# ---------- Stage 1: зависимости бэкенда формы ----------
+FROM node:22-alpine AS deps
 
 WORKDIR /app
 COPY backend/package*.json ./
 RUN npm ci --omit=dev --no-audit --no-fund
 
 
-# ---------- Stage 2: runtime ----------
-FROM node:20-alpine AS runtime
+# ---------- Stage 2: сборка CycleTracker (menstr) ----------
+FROM node:22-alpine AS menstr-build
+
+WORKDIR /app/menstr
+COPY menstr/package*.json ./
+COPY menstr/backend/package*.json ./backend/
+COPY menstr/frontend/package*.json ./frontend/
+RUN npm --prefix backend ci --no-audit --no-fund \
+ && npm --prefix frontend ci --no-audit --no-fund
+
+COPY menstr ./
+# Билдим: tsc -> backend/dist, vite -> frontend/dist
+RUN npm --prefix backend run build && npm --prefix frontend run build
+
+
+# ---------- Stage 3: runtime (node 22 — menstr использует node:sqlite) ----------
+FROM node:22-alpine AS runtime
 
 # nginx — раздача статики и проксирование /api на node внутри контейнера
 # tini — корректная обработка сигналов от Docker
 RUN apk add --no-cache nginx tini curl
 
-# --- Файлы бэкенда ---
+# --- Файлы бэкенда формы ---
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY backend/package.json ./package.json
 COPY backend/server.js ./server.js
+
+# --- CycleTracker (menstr): собранный backend + node_modules + сборочный dist ---
+COPY --from=menstr-build /app/menstr/backend/dist      ./menstr/backend/dist
+COPY --from=menstr-build /app/menstr/backend/node_modules ./menstr/backend/node_modules
+COPY --from=menstr-build /app/menstr/backend/package.json ./menstr/backend/package.json
+COPY --from=menstr-build /app/menstr/frontend/dist     ./menstr/frontend/dist
+RUN mkdir -p ./menstr/backend/data ./menstr/uploads
 
 # --- Статика лендинга ---
 COPY index.html portfolio.html useful.html site.webmanifest /var/www/html/

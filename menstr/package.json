@@ -1,0 +1,17 @@
+{
+  "name": "cycle-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CycleTracker - веб-трекер менструального цикла (учебный MVP)",
+  "scripts": {
+    "postinstall": "npm --prefix backend install && npm --prefix frontend install",
+    "dev": "concurrently -k -n backend,frontend -c blue,magenta \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix backend run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
