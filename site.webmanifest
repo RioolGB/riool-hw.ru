@@ -10,17 +10,17 @@
   "lang": "ru",
   "icons": [
     {
-      "src": "images/favicon-32.png",
+      "src": "images/favicon-32.png?v=2",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "images/favicon-180.png",
+      "src": "images/favicon-180.png?v=2",
       "sizes": "180x180",
       "type": "image/png"
     },
     {
-      "src": "images/favicon-512.png",
+      "src": "images/favicon-512.png?v=2",
       "sizes": "512x512",
       "type": "image/png"
     }
