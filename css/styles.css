@@ -1313,7 +1313,334 @@ ul { padding: 0; list-style: none; }
 }
 
 /* --------------------------------------------------------------------------
-   12. Адаптив
+   12. HI-TECH: анимации и микровзаимодействия
+   -------------------------------------------------------------------------- */
+
+/* Регистрируем кастомное свойство угла — для вращающегося контура рамки */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Медленный «проход» декоративной сетки в hero */
+.grid-lines { animation: gridPan 22s linear infinite; }
+
+@keyframes gridPan {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 64px 64px, 64px 64px; }
+}
+
+/* Дрейф светящихся орбов.
+   Используем свойство translate — оно складывается с parallax-трансформом из JS,
+   поэтому анимация и параллакс не конфликтуют. */
+.orb { animation: orbFloat 16s ease-in-out infinite; }
+.orb--2 { animation-duration: 20s; animation-delay: -5s; }
+.orb--3 { animation-duration: 24s; animation-delay: -9s; }
+
+@keyframes orbFloat {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -30px; }
+}
+
+/* Сканирующая световая полоса по hero */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(52, 211, 153, 0.05) 46%,
+    rgba(94, 234, 212, 0.13) 50%,
+    rgba(52, 211, 153, 0.05) 54%,
+    transparent 100%);
+  background-size: 100% 260%;
+  background-repeat: no-repeat;
+  mix-blend-mode: screen;
+  animation: heroScan 9s linear infinite;
+}
+
+@keyframes heroScan {
+  from { background-position: 0 130%; }
+  to   { background-position: 0 -130%; }
+}
+
+/* Заголовок hero: градиент с бегущим блеском (только при поддержке) */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title {
+    background: linear-gradient(100deg,
+      #eafff7 0%,
+      var(--accent-light) 22%,
+      #ffffff 42%,
+      var(--accent) 62%,
+      #eafff7 82%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: titleShine 9s linear infinite;
+  }
+}
+
+@keyframes titleShine {
+  from { background-position: 220% center; }
+  to   { background-position: -20% center; }
+}
+
+/* Пульсирующая точка у надписи секций */
+.section__eyebrow { position: relative; }
+
+.section__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  vertical-align: middle;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+/* Блик по «пилюле»-надписи hero */
+.hero__eyebrow { position: relative; overflow: hidden; }
+
+.hero__eyebrow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(125, 240, 196, 0.30) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: sheen 5.5s var(--ease) infinite;
+}
+
+@keyframes sheen {
+  0%        { transform: translateX(-130%); }
+  55%, 100% { transform: translateX(130%); }
+}
+
+/* Hi-tech рамка фото: вращающийся неоновый контур + луч сканера */
+.hero__photo-frame { isolation: isolate; }
+
+.hero__photo-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--angle),
+    transparent 0deg,
+    rgba(52, 211, 153, 0.9) 40deg,
+    transparent 110deg,
+    transparent 180deg,
+    rgba(94, 234, 212, 0.9) 220deg,
+    transparent 290deg,
+    transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: spinAngle 7s linear infinite;
+}
+
+@keyframes spinAngle { to { --angle: 360deg; } }
+
+.hero__photo-frame::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  z-index: 2;
+  height: 26%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, transparent, rgba(94, 234, 212, 0.18), transparent);
+  pointer-events: none;
+  animation: photoScan 6s var(--ease) infinite;
+}
+
+@keyframes photoScan {
+  0%   { transform: translateY(-20%); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(300%); opacity: 0; }
+}
+
+/* Карточки: блик при наведении + подсветка-«glare», следующая за курсором */
+.card { --mx: 50%; --my: 50%; }
+
+.card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
+  transform: translateX(-140%);
+  transition: transform 0.75s var(--ease);
+}
+
+.card:hover .card__media::after,
+.card:focus-within .card__media::after { transform: translateX(140%); }
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+  background: radial-gradient(320px circle at var(--mx) var(--my),
+    rgba(125, 240, 196, 0.16), transparent 62%);
+}
+
+.card:hover::after,
+.card:focus-within::after { opacity: 1; }
+
+/* Кнопки: световой блик, пробегающий по элементу при наведении */
+.btn { overflow: hidden; }
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -40%;
+  width: 38%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.6s var(--ease);
+}
+
+.btn:hover::before { left: 130%; }
+
+/* Пилюли навыков: каскадное появление с «всплытием» */
+.about__skill {
+  opacity: 0;
+  transform: translateY(14px) scale(0.96);
+}
+
+.about__skills.is-visible .about__skill {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.about__skills.is-visible .about__skill:nth-child(1) { transition-delay: 0.05s; }
+.about__skills.is-visible .about__skill:nth-child(2) { transition-delay: 0.12s; }
+.about__skills.is-visible .about__skill:nth-child(3) { transition-delay: 0.19s; }
+.about__skills.is-visible .about__skill:nth-child(4) { transition-delay: 0.26s; }
+.about__skills.is-visible .about__skill:nth-child(5) { transition-delay: 0.33s; }
+.about__skills.is-visible .about__skill:nth-child(6) { transition-delay: 0.40s; }
+
+.about__skills.is-visible .about__skill:hover { transform: translateY(-2px); }
+
+/* Контактные карточки: неоновая линия сверху при наведении */
+.contact-card { position: relative; overflow: hidden; }
+
+.contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-bright), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+
+.contact-card:hover::before,
+.contact-card:focus-visible::before { transform: scaleX(1); }
+
+/* Варианты появления при скролле (направление задаётся в разметке) */
+.reveal { transition: opacity 0.7s var(--ease), transform 0.7s var(--ease), filter 0.7s var(--ease); }
+.reveal[data-reveal='left']  { transform: translateX(-36px); }
+.reveal[data-reveal='right'] { transform: translateX(36px); }
+.reveal[data-reveal='scale'] { transform: translateY(24px) scale(0.95); }
+.reveal[data-reveal='blur']  { filter: blur(12px); }
+
+.reveal.is-visible,
+.no-js .reveal[data-reveal] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Полоса прогресса чтения страницы (создаётся из JS) */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 120;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.75);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Курсор-подсветка (только desktop, создаётся из JS) */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 560px;
+  height: 560px;
+  margin: -280px 0 0 -280px;
+  border-radius: 50%;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.12), rgba(52, 211, 153, 0) 62%);
+}
+
+.cursor-glow.is-on { opacity: 1; }
+
+/* На сенсорных экранах hover-эффекты и подсветка курсора не нужны */
+@media (hover: none) {
+  .card__media::after,
+  .card::after,
+  .btn::before,
+  .contact-card::before { display: none; }
+  .cursor-glow { display: none; }
+}
+
+/* Дополнительно отключаем декоративные анимации при reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .grid-lines,
+  .orb,
+  .hero::after,
+  .hero__title,
+  .hero__eyebrow::after,
+  .hero__photo-frame::before,
+  .hero__photo-frame::after,
+  .section__eyebrow::before { animation: none !important; }
+
+  .about__skill { opacity: 1 !important; transform: none !important; }
+  .reveal[data-reveal] { opacity: 1; transform: none; filter: none; }
+  .cursor-glow { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   13. Адаптив
    -------------------------------------------------------------------------- */
 
 /* Планшет и меньше */
@@ -1439,7 +1766,7 @@ ul { padding: 0; list-style: none; }
 }
 
 /* --------------------------------------------------------------------------
-   13. Доступность: меньше движения — по запросу системы
+   14. Доступность: меньше движения — по запросу системы
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

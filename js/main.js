@@ -438,7 +438,94 @@
   }
 
   /* ------------------------------------------------------------------
-     9. Инициализация
+     9. Полоса прогресса чтения страницы
+     Создаёт элемент и растягивает его по мере прокрутки.
+     ------------------------------------------------------------------ */
+  function initScrollProgress() {
+    var bar = document.createElement('div');
+    bar.className = 'scroll-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+
+    var ticking = false;
+    var update = function () {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      bar.style.transform = 'scaleX(' + progress.toFixed(4) + ')';
+      ticking = false;
+    };
+
+    update();
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+  }
+
+  /* ------------------------------------------------------------------
+     10. Курсор-подсветка (только desktop, с плавным «догоном»)
+     ------------------------------------------------------------------ */
+  function initCursorGlow() {
+    if (prefersReducedMotion) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    var glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    glow.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(glow);
+
+    var targetX = window.innerWidth / 2;
+    var targetY = window.innerHeight / 2;
+    var curX = targetX;
+    var curY = targetY;
+    var raf = null;
+
+    var render = function () {
+      curX += (targetX - curX) * 0.12;
+      curY += (targetY - curY) * 0.12;
+      glow.style.transform = 'translate3d(' + curX.toFixed(1) + 'px,' + curY.toFixed(1) + 'px,0)';
+
+      if (Math.abs(targetX - curX) > 0.5 || Math.abs(targetY - curY) > 0.5) {
+        raf = window.requestAnimationFrame(render);
+      } else {
+        raf = null;
+      }
+    };
+
+    window.addEventListener('pointermove', function (e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      glow.classList.add('is-on');
+      if (!raf) raf = window.requestAnimationFrame(render);
+    }, { passive: true });
+
+    document.addEventListener('pointerleave', function () {
+      glow.classList.remove('is-on');
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     11. Подсветка-«glare» на карточках — следует за курсором
+     ------------------------------------------------------------------ */
+  function initCardGlare() {
+    if (prefersReducedMotion) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    $$('.card').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        card.style.setProperty('--mx', (((e.clientX - rect.left) / rect.width) * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', (((e.clientY - rect.top) / rect.height) * 100).toFixed(1) + '%');
+      }, { passive: true });
+    });
+  }
+
+  /* ------------------------------------------------------------------
+     12. Инициализация
      ------------------------------------------------------------------ */
   function init() {
     document.documentElement.classList.remove('no-js');
@@ -455,6 +542,9 @@
     initActiveSection();
     modal.init();
     initForm();
+    initScrollProgress();
+    initCursorGlow();
+    initCardGlare();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
