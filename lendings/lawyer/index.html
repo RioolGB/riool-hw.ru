@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+  <!-- Мета-данные страницы: кодировка, адаптивность, заголовок и описание для SEO -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Семейный юрист Елена Соколова | Юридическая помощь по семейному праву</title>
   <meta name="description" content="Семейный юрист Елена Соколова: защита по разводам, разделу имущества, алиментам. Более 12 лет практики. Получите план защиты бесплатно.">
+  <!-- Favicon сайта: SVG (современные браузеры), ICO и PNG (совместимость), Apple Touch Icon -->
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="favicon-32.png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Подключение шрифтов Montserrat и Open Sans (Google Fonts) и основного файла стилей -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Шапка сайта: логотип + навигация по якорям + мобильное бургер-меню -->
+  <!-- ============================================================
+       ШАПКА САЙТА (служебный элемент, не входит в 6 блоков)
+       Логотип + навигация по якорям + мобильное бургер-меню — начало
+       ============================================================ -->
   <header class="site-header" id="top">
     <div class="container site-header__inner">
       <a class="site-header__logo" href="#hero" aria-label="Елена Соколова — в начало страницы">
@@ -39,7 +45,13 @@
       </nav>
     </div>
   </header>
-  <!-- Блок 1: Hero -->
+  <!-- ШАПКА САЙТА — конец -->
+
+  <!-- ============================================================
+       Блок 1: HERO (первый экран) — начало
+       Назначение: главный заголовок, подзаголовок с достижениями,
+       CTA-кнопка перехода к форме и фото юриста
+       ============================================================ -->
   <section class="hero" id="hero">
     <div class="container hero__container">
       <div class="hero__content">
@@ -52,7 +64,14 @@
       </div>
     </div>
   </section>
+  <!-- Блок 1: HERO — конец -->
+
   <main>
+    <!-- ============================================================
+         Блок 2: УСЛУГИ И ЦЕНЫ — начало
+         Назначение: перечень услуг с ценами. Показывается двумя
+         вариантами: таблица (десктоп) и карточки (мобильные)
+         ============================================================ -->
     <section class="services" id="services">
       <div class="container">
         <h2 class="section-title">Услуги и прозрачные цены</h2>
@@ -118,6 +137,12 @@
         </div>
       </div>
     </section>
+    <!-- Блок 2: УСЛУГИ И ЦЕНЫ — конец -->
+
+    <!-- ============================================================
+         Блок 3: ЭТАПЫ РАБОТЫ — начало
+         Назначение: пошаговый процесс сотрудничества с юристом (5 шагов)
+         ============================================================ -->
     <section class="steps" id="steps">
       <div class="container">
         <h2 class="section-title">Как мы будем работать</h2>
@@ -145,6 +170,12 @@
         </ol>
       </div>
     </section>
+    <!-- Блок 3: ЭТАПЫ РАБОТЫ — конец -->
+
+    <!-- ============================================================
+         Блок 4: ОТЗЫВЫ — начало
+         Назначение: карточки с историями клиентов (социальное доказательство)
+         ============================================================ -->
     <section class="reviews" id="reviews">
       <div class="container">
         <h2 class="section-title">Истории клиентов</h2>
@@ -164,6 +195,13 @@
         </div>
       </div>
     </section>
+    <!-- Блок 4: ОТЗЫВЫ — конец -->
+
+    <!-- ============================================================
+         Блок 5: FAQ (ответы на важные вопросы) — начало
+         Назначение: аккордеон с частыми вопросами и ответами
+         (логика раскрытия реализована в js/main.js)
+         ============================================================ -->
     <section class="faq" id="faq">
       <div class="container">
         <h2 class="section-title">Ответы на важные вопросы</h2>
@@ -189,21 +227,35 @@
         </div>
       </div>
     </section>
+    <!-- Блок 5: FAQ — конец -->
+
+    <!-- ============================================================
+         Блок 6: ФОРМА ЗАЯВКИ — начало
+         Назначение: встроенная Яндекс Форма для записи на консультацию
+         ============================================================ -->
     <section class="form-section" id="form">
       <div class="container">
         <h2 class="section-title">Запишитесь на бесплатную консультацию</h2>
         <p class="form-section__subtitle">Перезвоню в течение 30 минут в рабочее время</p>
         <div class="form-wrapper">
-          <!-- Контейнер для Яндекс Формы: id="yandex-form-container" -->
+          <!-- Контейнер для Яндекс Формы (id="yandex-form-container").
+               Сюда встраивается iframe формы; aria-live="polite" сообщает
+               скринридерам о динамическом изменении содержимого -->
           <div id="yandex-form-container" aria-live="polite">
-            <!-- Скрипт-загрузчик Яндекс Форм + встроенная форма -->
+            <!-- Скрипт-загрузчик Яндекс Форм и сама форма в iframe -->
             <script src="https://forms.yandex.ru/_static/embed.js"></script>
             <iframe src="https://forms.yandex.ru/u/6ad0c7ba5057b22dd53f8eb0?iframe=1" frameborder="0" name="ya-form-6ad0c7ba5057b22dd53f8eb0" width="650"></iframe>
           </div>
         </div>
       </div>
     </section>
+    <!-- Блок 6: ФОРМА ЗАЯВКИ — конец -->
   </main>
+
+  <!-- ============================================================
+       ФУТЕР (служебный элемент, не входит в 6 блоков) — начало
+       Логотип, контакты, ссылка на политику и копирайт
+       ============================================================ -->
   <footer class="footer">
     <div class="container">
       <div class="footer__content">
@@ -224,6 +276,9 @@
       </div>
     </div>
   </footer>
+  <!-- ФУТЕР — конец -->
+
+  <!-- Подключение скриптов: аккордеон FAQ, плавная прокрутка, мобильное меню -->
   <script src="js/main.js"></script>
 </body>
 </html>
