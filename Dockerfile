@@ -58,6 +58,7 @@ COPY css /var/www/html/css
 COPY js /var/www/html/js
 COPY images /var/www/html/images
 COPY lendings /var/www/html/lendings
+COPY tools /var/www/html/tools
 
 # --- Конфигурация nginx для контейнера ---
 # Заменяем основной nginx.conf целиком: /etc/nginx/http.d/ подключается
