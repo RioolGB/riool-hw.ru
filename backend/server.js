@@ -57,7 +57,11 @@ const config = {
   minFillMs: Number(process.env.MIN_FILL_MS || 1500),
 
   // Проверка origin/referer (включается автоматически, если задан ALLOWED_ORIGINS)
-  trustProxy: process.env.TRUST_PROXY === 'true'
+  trustProxy: process.env.TRUST_PROXY === 'true',
+
+  // Сессия кинотеатра: токен Jellyfin лежит в HttpOnly-cookie (JS его не видит)
+  cookieName: 'riool_jf',
+  sessionMaxAgeSec: 30 * 24 * 60 * 60 // 30 дней
 };
 
 const isConfigured = Boolean(config.smtp.auth.user && config.smtp.auth.pass);
@@ -69,6 +73,25 @@ function log(...args) {
   const stamp = new Date().toISOString();
   console.log(`[${stamp}]`, ...args);
 }
+
+/* Разбор cookie вручную, чтобы не тянуть cookie-parser. */
+function parseCookies(header) {
+  const out = {};
+  if (!header) return out;
+  for (const part of String(header).split(';')) {
+    const i = part.indexOf('=');
+    if (i < 0) continue;
+    const k = part.slice(0, i).trim();
+    if (!k) continue;
+    out[k] = decodeURIComponent(part.slice(i + 1).trim());
+  }
+  return out;
+}
+
+/* Короткий кэш проверок сессии: HLS делает много запросов, и гонять каждый
+   в Jellyfin незачем. Ключ — токен, значение — отметка времени. */
+const authCache = new Map(); // token -> { ok, expires }
+const AUTH_CACHE_MS = 30 * 1000;
 
 /* --------------------------------------------------------------------------
    Транспорт для писем
@@ -276,6 +299,58 @@ function buildText({ name, email, message, page, userAgent, ip }) {
 }
 
 /* --------------------------------------------------------------------------
+   Сессия кинотеатра: вход по логину/паролю Jellyfin, токен — в HttpOnly-cookie
+   -------------------------------------------------------------------------- */
+
+/* Ограничение частоты попыток входа, чтобы не подбирали пароль. */
+const LOGIN_WINDOW_MS = 10 * 60 * 1000;
+const LOGIN_MAX = 12;
+const loginHits = new Map();
+
+function loginRateLimit(req, res, next) {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown';
+  const now = Date.now();
+  const list = (loginHits.get(ip) || []).filter((t) => now - t < LOGIN_WINDOW_MS);
+
+  if (list.length >= LOGIN_MAX) {
+    return res.status(429).json({ ok: false, error: 'Слишком много попыток. Попробуйте позже.' });
+  }
+  list.push(now);
+  loginHits.set(ip, list);
+  next();
+}
+
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, list] of loginHits) {
+    const fresh = list.filter((t) => now - t < LOGIN_WINDOW_MS);
+    if (fresh.length) loginHits.set(ip, fresh);
+    else loginHits.delete(ip);
+  }
+  for (const [token, rec] of authCache) {
+    if (rec.expires < now) authCache.delete(token);
+  }
+}, LOGIN_WINDOW_MS).unref();
+
+/* Достаём токен сессии из cookie запроса. */
+function sessionToken(req) {
+  const cookies = parseCookies(req.get('cookie') || '');
+  return cookies[config.cookieName] || '';
+}
+
+/* Проверка токена с коротким кэшем. true — токен валиден. */
+async function isSessionValid(token) {
+  if (!token) return false;
+  const cached = authCache.get(token);
+  if (cached && cached.expires > Date.now()) return cached.ok;
+
+  const user = await jellyfin.validateToken(token);
+  const ok = Boolean(user);
+  authCache.set(token, { ok, expires: Date.now() + AUTH_CACHE_MS });
+  return ok;
+}
+
+/* --------------------------------------------------------------------------
    Маршруты
    -------------------------------------------------------------------------- */
 
@@ -285,12 +360,15 @@ app.get('/health', (req, res) => {
 });
 
 /* --------------------------------------------------------------------------
-   Каталог кинотеатра (публичный, без авторизации посетителя).
+   Каталог кинотеатра.
 
    Дерево строится из реальных путей файлов на диске (поле Path в Jellyfin),
    поэтому структура папок сохраняется. Названия берутся из имён файлов и
    папок, а не из метаданных Jellyfin. Токен Jellyfin на клиент не отдаётся —
    видеопоток идёт через nginx-прокси /jf/ (см. deploy/nginx-container.conf).
+
+   Доступ к каталогу закрыт сессией: nginx (auth_request) пропускает запрос
+   только при валидной cookie входа.
    -------------------------------------------------------------------------- */
 app.get('/api/media/tree', async (req, res) => {
   if (!jellyfin.isConfigured()) {
@@ -299,12 +377,68 @@ app.get('/api/media/tree', async (req, res) => {
 
   try {
     const data = await jellyfin.getTree();
-    res.setHeader('Cache-Control', 'public, max-age=300');
+    res.setHeader('Cache-Control', 'private, max-age=300');
     return res.json({ ok: true, ...data });
   } catch (err) {
     log('ОШИБКА каталога:', err.message);
     return res.status(502).json({ ok: false, error: 'Каталог временно недоступен' });
   }
+});
+
+/* --------------------------------------------------------------------------
+   Сессия кинотеатра
+   -------------------------------------------------------------------------- */
+
+// Вход: проверяем логин/пароль в Jellyfin и кладём токен в HttpOnly-cookie
+app.post('/api/login', loginRateLimit, async (req, res) => {
+  const username = String(req.body?.username ?? req.body?.Username ?? '').trim();
+  const password = String(req.body?.password ?? req.body?.Pw ?? '');
+
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, error: 'Введите логин и пароль.' });
+  }
+
+  try {
+    const { token, user } = await jellyfin.authenticate(username, password);
+    res.cookie(config.cookieName, token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: config.sessionMaxAgeSec * 1000
+    });
+    authCache.set(token, { ok: true, expires: Date.now() + AUTH_CACHE_MS });
+    log('вход:', username);
+    return res.json({ ok: true, user: user ? { id: user.Id, name: user.Name } : null });
+  } catch (err) {
+    if (err.status === 401) {
+      return res.status(401).json({ ok: false, error: 'Неверный логин или пароль. Доступ ограничен.' });
+    }
+    log('ОШИБКА входа:', err.message);
+    return res.status(502).json({ ok: false, error: 'Сервис входа временно недоступен.' });
+  }
+});
+
+// Выход: чистим cookie
+app.post('/api/logout', (req, res) => {
+  res.clearCookie(config.cookieName, { path: '/' });
+  return res.json({ ok: true });
+});
+
+// Текущий статус сессии (для фронтенда)
+app.get('/api/session', async (req, res) => {
+  const token = sessionToken(req);
+  if (!token || !(await isSessionValid(token))) {
+    return res.status(401).json({ ok: false });
+  }
+  return res.json({ ok: true });
+});
+
+// Внутренний эндпоинт для nginx auth_request: 204 — пускаем, 401 — нет.
+app.get('/api/authcheck', async (req, res) => {
+  const token = sessionToken(req);
+  if (token && (await isSessionValid(token))) return res.status(204).end();
+  return res.status(401).end();
 });
 
 // Приём заявки

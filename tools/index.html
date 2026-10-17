@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
 
-  <link rel="stylesheet" href="css/tools.css?v=4">
+  <link rel="stylesheet" href="css/tools.css?v=5">
   <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 
@@ -150,6 +150,57 @@
     </div>
   </footer>
 
-  <script src="js/tools.js?v=3" defer></script>
+  <!-- ================= LOGIN GATE ================= -->
+  <div class="gate" id="login-gate" hidden>
+    <div class="gate__backdrop" data-gate-close></div>
+
+    <div class="gate__dialog" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+      <button class="gate__close" id="gate-close" type="button" aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+
+      <span class="gate__badge">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Доступ к кинотеатру
+      </span>
+
+      <h2 class="gate__title" id="gate-title">Вход в кинотеатр</h2>
+      <p class="gate__text">Коллекция доступна по логину и паролю. Введите ваши данные, чтобы продолжить.</p>
+
+      <form class="gate__form" id="gate-form" novalidate>
+        <label class="gate__field">
+          <span class="gate__label">Логин</span>
+          <input class="gate__input" id="gate-user" name="username" type="text"
+                 autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+        </label>
+
+        <label class="gate__field">
+          <span class="gate__label">Пароль</span>
+          <span class="gate__pw">
+            <input class="gate__input" id="gate-pass" name="password" type="password"
+                   autocomplete="current-password" required>
+            <button class="gate__pw-toggle" id="gate-pw-toggle" type="button" aria-label="Показать пароль">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </span>
+        </label>
+
+        <p class="gate__error" id="gate-error" role="alert" hidden></p>
+
+        <button class="btn btn--primary btn--lg btn--block gate__submit" id="gate-submit" type="submit">
+          <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span id="gate-submit-text">Войти в кинотеатр</span>
+        </button>
+      </form>
+
+      <p class="gate__legal">
+        Доступ ограничен владельцем коллекции. Материалы доступны исключительно для личного
+        ознакомительного просмотра в кругу семьи (ст. 1273 ГК РФ). Публичный показ,
+        распространение и коммерческое использование запрещены. Реклама не показывается.
+      </p>
+    </div>
+  </div>
+
+  <script src="js/tools.js?v=4" defer></script>
 </body>
 </html>

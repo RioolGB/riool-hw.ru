@@ -24,6 +24,10 @@ location ~ "^/jf/(?:Items/[A-Fa-f0-9]{32}/PlaybackInfo|Videos/[A-Fa-f0-9]{32}/st
     # определён в nginx-container.conf.
     if ($referer_ok = 0) { return 403; }
 
+    # Плеер доступен только вошедшему зрителю: nginx спрашивает у node,
+    # валидна ли cookie входа (см. location = /_auth). Без сессии — 401.
+    auth_request /_auth;
+
     # Отрезаем префикс /jf, чтобы запрос ушёл в Jellyfin как /Items/... и т.п.
     # (в location по регулярке proxy_pass не может содержать URI-часть).
     rewrite ^/jf(/.*)$ $1 break;

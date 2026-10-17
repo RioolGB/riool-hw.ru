@@ -34,10 +34,15 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 минут
 
 /* Заголовок авторизации Jellyfin. ВАЖНО: эта версия Jellyfin принимает токен
    ТОЛЬКО через заголовок Authorization: MediaBrowser Token="…" (ни api_key в
-   query, ни X-Emby-Token не работают). */
+   query, ни X-Emby-Token не работают). Без токена заголовок всё равно нужен —
+   по нему Jellyfin выдаёт токен при входе по логину/паролю. */
+function clientHeader(token) {
+  return 'MediaBrowser ' + (token ? 'Token="' + token + '", ' : '') +
+    'Client="riool-web", Device="browser", DeviceId="riool-web-1", Version="1.0.0"';
+}
+
 function authHeader() {
-  return 'MediaBrowser Token="' + JELLYFIN_TOKEN +
-    '", Client="riool-web", Device="browser", DeviceId="riool-web-1", Version="1.0.0"';
+  return clientHeader(JELLYFIN_TOKEN);
 }
 
 /* GET-запрос к Jellyfin с таймаутом. Читает JSON. */
@@ -182,4 +187,61 @@ function isConfigured() {
   return Boolean(JELLYFIN_TOKEN);
 }
 
-module.exports = { getTree, isConfigured, buildTree };
+/* --- Вход посетителя по логину/паролю Jellyfin -----------------------------
+   Возвращает { token, user } либо бросает ошибку с .status = 401 при неверных
+   данных. Пароль нигде не логируется. */
+async function authenticate(username, password) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(JELLYFIN_URL + '/Users/AuthenticateByName', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: clientHeader('') },
+      body: JSON.stringify({ Username: String(username || ''), Pw: String(password || '') }),
+      signal: ctrl.signal
+    });
+
+    if (res.status === 401) {
+      const err = new Error('Неверный логин или пароль');
+      err.status = 401;
+      throw err;
+    }
+    if (!res.ok) {
+      const err = new Error('Jellyfin HTTP ' + res.status);
+      err.status = res.status;
+      throw err;
+    }
+
+    const data = await res.json();
+    if (!data || !data.AccessToken) {
+      const err = new Error('Jellyfin не выдал токен');
+      err.status = 502;
+      throw err;
+    }
+    return { token: data.AccessToken, user: data.User };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* --- Проверка токена сессии посетителя ------------------------------------
+   Возвращает объект пользователя или null, если токен пустой/недействителен. */
+async function validateToken(token) {
+  if (!token) return null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
+  try {
+    const res = await fetch(JELLYFIN_URL + '/Users/Me', {
+      headers: { Authorization: clientHeader(token) },
+      signal: ctrl.signal
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+module.exports = { getTree, isConfigured, buildTree, authenticate, validateToken };

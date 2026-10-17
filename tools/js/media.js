@@ -522,8 +522,30 @@
       if (e.key === 'Escape' && !els['player'].hidden) closePlayer();
     });
 
+    var logout = document.getElementById('nav-logout');
+    if (logout) {
+      logout.addEventListener('click', function () {
+        fetch('/api/logout', { method: 'POST' })
+          .catch(function () {})
+          .then(function () { window.location.href = 'index.html'; });
+      });
+    }
+
+    // Без активной сессии каталог показывать нельзя — отправляем на форму входа.
+    fetch('/api/session', { headers: { 'Accept': 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) { window.location.replace('index.html?login=1'); return; }
+        loadTree();
+      })
+      .catch(function () { window.location.replace('index.html?login=1'); });
+  }
+
+  function loadTree() {
     fetch(TREE_URL)
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r.status === 401) { window.location.replace('index.html?login=1'); throw new Error('unauth'); }
+        return r.json();
+      })
       .then(function (data) {
         if (!data || !data.ok) throw new Error((data && data.error) || 'Каталог недоступен');
         state.userId = data.userId;
@@ -537,6 +559,7 @@
         render();
       })
       .catch(function (err) {
+        if (err && err.message === 'unauth') return;
         els.status.hidden = false;
         els.status.textContent = 'Каталог временно недоступен (' + err.message + ').';
       });

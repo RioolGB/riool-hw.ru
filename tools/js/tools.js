@@ -98,12 +98,122 @@
     year.forEach(function (el) { el.textContent = current; });
   }
 
+  /* --- Логин-гейт кинотеатра ------------------------------------------- */
+  function initGate() {
+    var gate = document.getElementById('login-gate');
+    if (!gate) return; // не лендинг
+
+    var form = document.getElementById('gate-form');
+    var user = document.getElementById('gate-user');
+    var pass = document.getElementById('gate-pass');
+    var error = document.getElementById('gate-error');
+    var submit = document.getElementById('gate-submit');
+    var submitText = document.getElementById('gate-submit-text');
+    var closeBtn = document.getElementById('gate-close');
+    var backdrop = gate.querySelector('[data-gate-close]');
+    var toggle = document.getElementById('gate-pw-toggle');
+
+    function showError(msg) { error.textContent = msg; error.hidden = false; }
+    function clearError() { error.hidden = true; error.textContent = ''; }
+
+    function open() {
+      gate.hidden = false;
+      document.body.style.overflow = 'hidden';
+      clearError();
+      setTimeout(function () { try { user.focus(); } catch (e) {} }, 40);
+    }
+
+    function closeGate() {
+      gate.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function goCinema() { window.location.href = 'media.html'; }
+
+    // Проверяем сессию: если уже вошли — сразу в каталог, иначе показываем форму.
+    function enterCinema(e) {
+      if (e) e.preventDefault();
+      fetch('/api/session', { headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.ok; })
+        .catch(function () { return false; })
+        .then(function (ok) { if (ok) goCinema(); else open(); });
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('a[href$="media.html"]'), function (a) {
+      a.addEventListener('click', enterCinema);
+    });
+
+    closeBtn.addEventListener('click', closeGate);
+    if (backdrop) backdrop.addEventListener('click', closeGate);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !gate.hidden) closeGate();
+    });
+
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        var showing = pass.type === 'text';
+        pass.type = showing ? 'password' : 'text';
+        toggle.setAttribute('aria-label', showing ? 'Показать пароль' : 'Скрыть пароль');
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      clearError();
+
+      var u = user.value.trim();
+      var p = pass.value;
+      if (!u || !p) { showError('Введите логин и пароль.'); return; }
+
+      var prevText = submitText.textContent;
+      submit.disabled = true;
+      submit.classList.add('is-busy');
+      submitText.textContent = 'Проверка…';
+
+      function reset() {
+        submit.disabled = false;
+        submit.classList.remove('is-busy');
+        submitText.textContent = prevText;
+        pass.value = '';
+        try { pass.focus(); } catch (err) {}
+      }
+
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (res.ok && res.data && res.data.ok) { goCinema(); return; }
+          showError((res.data && res.data.error) || 'Неверный логин или пароль. Доступ ограничен.');
+          reset();
+        })
+        .catch(function () {
+          showError('Не удалось связаться с сервером. Попробуйте позже.');
+          reset();
+        });
+    });
+
+    // Автооткрытие формы, если вернулись после истечения сессии.
+    try {
+      if (new URLSearchParams(window.location.search).get('login') === '1') {
+        open();
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+      }
+    } catch (e) {}
+  }
+
   function init() {
     initHeader();
     initMobileMenu();
     initReveal();
     initCardVideo();
     initYear();
+    initGate();
   }
 
   if (document.readyState === 'loading') {
