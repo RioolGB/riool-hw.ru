@@ -341,11 +341,100 @@
   }
 
   /* --- Поиск ------------------------------------------------------------ */
+  /* Живой поиск: после 2+ символов показываем выпадающий список подсказок.
+     Enter — показать все результаты в основной сетке, Escape — закрыть. */
+  var SEARCH_MIN = 2;
+  var SEARCH_MAX = 8;
+  var searchTimer = null;
+
+  function matchFlat(q) {
+    var lq = q.toLowerCase();
+    return state.flat.filter(function (f) {
+      return f.name.toLowerCase().indexOf(lq) !== -1 ||
+             (f.trail && f.trail.toLowerCase().indexOf(lq) !== -1);
+    });
+  }
+
+  function hideSuggest() {
+    if (!els.suggest) return;
+    els.suggest.hidden = true;
+    els.suggest.textContent = '';
+  }
+
+  function showSuggest(q) {
+    var box = els.suggest;
+    box.textContent = '';
+    var results = matchFlat(q);
+
+    if (!results.length) {
+      box.appendChild(el('div', 'lib__suggest-empty', 'Ничего не найдено'));
+      box.hidden = false;
+      return;
+    }
+
+    results.slice(0, SEARCH_MAX).forEach(function (f) {
+      var item = el('button', 'lib__suggest-item');
+      item.type = 'button';
+
+      var play = el('span', 'lib__suggest-play');
+      play.appendChild(svg(ICON_PLAY));
+      item.appendChild(play);
+
+      var nm = el('span', 'lib__suggest-name', f.name);
+      if (f.trail) nm.title = f.trail + ' / ' + f.name;
+      item.appendChild(nm);
+
+      if (f.ext) item.appendChild(el('span', 'lib-file__ext', f.ext));
+
+      // mousedown, а не click — чтобы сработало раньше, чем уйдёт фокус (blur).
+      item.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        hideSuggest();
+        openPlayer(f, f.trail ? f.trail + ' / ' + f.name : f.name);
+      });
+
+      box.appendChild(item);
+    });
+
+    if (results.length > SEARCH_MAX) {
+      var all = el('button', 'lib__suggest-all', 'Показать все результаты (' + results.length + ')');
+      all.type = 'button';
+      all.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        applySearch(q);
+      });
+      box.appendChild(all);
+    }
+
+    box.hidden = false;
+  }
+
+  function applySearch(q) {
+    hideSuggest();
+    state.query = q;
+    render();
+  }
+
   function onSearch() {
     var q = els.search.value.trim();
-    state.query = q;
     els.clear.hidden = !q;
-    render();
+    clearTimeout(searchTimer);
+
+    if (q.length < SEARCH_MIN) {
+      hideSuggest();
+      if (state.query) { state.query = ''; render(); }
+      return;
+    }
+    searchTimer = setTimeout(function () { showSuggest(q); }, 120);
+  }
+
+  function onSearchKey(e) {
+    if (e.key === 'Enter') {
+      var q = els.search.value.trim();
+      if (q) { e.preventDefault(); applySearch(q); els.search.blur(); }
+    } else if (e.key === 'Escape') {
+      hideSuggest();
+    }
   }
 
   /* --- Вспомогательное -------------------------------------------------- */
@@ -388,6 +477,7 @@
       breadcrumb: document.getElementById('lib-breadcrumb'),
       search: document.getElementById('lib-search'),
       clear: document.getElementById('lib-search-clear'),
+      suggest: document.getElementById('lib-suggest'),
       stats: document.getElementById('lib-stats'),
       'player': document.getElementById('player'),
       'playerTitle': document.getElementById('player-title'),
@@ -400,11 +490,26 @@
     if (!els.grid) return; // не страница каталога
 
     els.search.addEventListener('input', onSearch);
+    els.search.addEventListener('keydown', onSearchKey);
+    els.search.addEventListener('blur', function () { setTimeout(hideSuggest, 120); });
     els.clear.addEventListener('click', function () {
       els.search.value = '';
+      hideSuggest();
       onSearch();
       els.search.focus();
     });
+
+    // Дисклеймер для новых посетителей (запоминаем, что его скрыли).
+    var note = document.getElementById('lib-note');
+    if (note) {
+      try { if (localStorage.getItem('riool-cinema-note') === '0') note.hidden = true; } catch (e) {}
+      var noteClose = document.getElementById('lib-note-close');
+      if (noteClose) noteClose.addEventListener('click', function () {
+        note.hidden = true;
+        try { localStorage.setItem('riool-cinema-note', '0'); } catch (e) {}
+      });
+    }
+
     document.getElementById('player-close').addEventListener('click', closePlayer);
     document.querySelector('[data-player-close]').addEventListener('click', closePlayer);
     els['playerVideo'].addEventListener('error', function () {

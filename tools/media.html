@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
 
   <link rel="stylesheet" href="css/tools.css?v=3">
-  <link rel="stylesheet" href="css/media.css?v=1">
+  <link rel="stylesheet" href="css/media.css?v=2">
   <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 
@@ -76,10 +76,28 @@
             <button class="lib__search-clear" id="lib-search-clear" type="button" aria-label="Очистить" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
             </button>
+            <div class="lib__suggest" id="lib-suggest" role="listbox" aria-label="Подсказки поиска" hidden></div>
           </div>
         </div>
 
         <nav class="breadcrumb" id="lib-breadcrumb" aria-label="Текущий путь"></nav>
+
+        <div class="lib__note" id="lib-note">
+          <svg class="lib__note-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+          <div class="lib__note-body">
+            <p class="lib__note-title">Как пользоваться каталогом</p>
+            <ul class="lib__note-list">
+              <li>Сначала идут <b>папки</b> (фильмы, сериалы, сезоны) — откройте нужную, чтобы выбрать конкретный фильм.</li>
+              <li>Отдельные видеофайлы, лежащие вне папок, показаны ниже в разделе <b>«Файлы»</b>.</li>
+              <li>Не нашли фильм — начните вводить название в <b>поиске</b> сверху, появятся подсказки.</li>
+              <li>Совместимые файлы играют сразу, остальные <b>перекодируются</b> на лету (первый запуск может занять пару секунд).</li>
+              <li>Просмотр <b>продолжается с места остановки</b>. Регистрация не нужна.</li>
+            </ul>
+          </div>
+          <button class="lib__note-close" id="lib-note-close" type="button" aria-label="Скрыть подсказку">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
 
         <div class="lib__body">
           <div class="lib__status" id="lib-status">Загрузка каталога…</div>
@@ -129,6 +147,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
   <script src="js/tools.js?v=3" defer></script>
-  <script src="js/media.js?v=1" defer></script>
+  <script src="js/media.js?v=2" defer></script>
 </body>
 </html>

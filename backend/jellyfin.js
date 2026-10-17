@@ -21,12 +21,13 @@
 const JELLYFIN_URL = (process.env.JELLYFIN_URL || 'http://riool-jellyfin:8096').replace(/\/+$/, '');
 const JELLYFIN_TOKEN = process.env.JELLYFIN_TOKEN || '';
 
-// Отображаемые имена корневых каталогов.
+// Отображаемые имена корневых каталогов. Зрителю не нужно знать про диски —
+// показываем нейтральные «части» коллекции.
 // /media   <- F:\Video  (согласно docker-compose.yml)
 // /media-d <- D:\Video
 const ROOT_NAMES = {
-  media: 'Диск F',
-  'media-d': 'Диск D'
+  media: 'Часть 2',
+  'media-d': 'Часть 1'
 };
 
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 минут

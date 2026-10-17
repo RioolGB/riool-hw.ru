@@ -62,8 +62,113 @@
   color: var(--text-dim);
   flex: none;
 }
+.lib__search-clear[hidden] { display: none; }
 .lib__search-clear svg { width: 16px; height: 16px; }
 .lib__search-clear:hover { color: var(--text); background: var(--surface-strong); }
+
+/* --- Подсказки поиска (выпадающий список) --- */
+.lib__suggest {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 6px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+.lib__suggest[hidden] { display: none; }
+.lib__suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  transition: background var(--dur) var(--ease);
+}
+.lib__suggest-item:hover,
+.lib__suggest-item:focus-visible { background: var(--accent-soft); }
+.lib__suggest-play {
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.lib__suggest-play svg { width: 14px; height: 14px; }
+.lib__suggest-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lib__suggest-empty { padding: 12px; color: var(--text-dim); font-size: 14px; text-align: center; }
+.lib__suggest-all {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--border);
+  color: var(--accent-light);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+}
+.lib__suggest-all:hover { color: var(--text); }
+
+/* --- Дисклеймер для новых посетителей --- */
+.lib__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+.lib__note[hidden] { display: none; }
+.lib__note-icon { width: 22px; height: 22px; flex: none; margin-top: 1px; color: var(--accent-light); }
+.lib__note-body { flex: 1; min-width: 0; }
+.lib__note-title { margin: 0 0 8px; color: var(--text); font-weight: 600; font-size: 15px; }
+.lib__note-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.lib__note-list b { color: var(--text); font-weight: 600; }
+.lib__note-close {
+  display: grid;
+  place-items: center;
+  width: 26px; height: 26px;
+  flex: none;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  color: var(--text-dim);
+}
+.lib__note-close:hover { color: var(--text); background: var(--surface-strong); }
+.lib__note-close svg { width: 16px; height: 16px; }
+
 
 /* --- Хлебные крошки --- */
 .breadcrumb {
@@ -89,7 +194,13 @@
 }
 .breadcrumb__item:hover { background: var(--surface-strong); color: var(--text); }
 .breadcrumb__item.is-current { color: var(--text); font-weight: 600; cursor: default; }
-.breadcrumb__sep { color: var(--text-dim); user-select: none; }
+.breadcrumb__sep {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--text-dim);
+  user-select: none;
+}
 
 /* --- Тело каталога --- */
 .lib__status {
