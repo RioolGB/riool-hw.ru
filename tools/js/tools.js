@@ -64,6 +64,34 @@
     items.forEach(function (el) { observer.observe(el); });
   }
 
+  function initCardVideo() {
+    var videos = document.querySelectorAll('.card__video, .cinema-poster__video');
+    if (!videos.length) return;
+
+    Array.prototype.forEach.call(videos, function (video) {
+      video.muted = true;
+      video.loop = true;
+
+      var play = function () {
+        if (video.paused) {
+          var p = video.play();
+          if (p && typeof p.catch === 'function') p.catch(function () {});
+        }
+      };
+
+      if (video.readyState >= 2) play();
+      ['loadeddata', 'canplay', 'canplaythrough'].forEach(function (evt) {
+        video.addEventListener(evt, play);
+      });
+      // Подстраховка: если браузер отложил автозапуск до первого взаимодействия
+      document.addEventListener('pointerdown', play, { once: true });
+      document.addEventListener('touchstart', play, { once: true, passive: true });
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) play();
+      });
+    });
+  }
+
   function initYear() {
     var year = document.querySelectorAll('[data-year]');
     var current = String(new Date().getFullYear());
@@ -74,6 +102,7 @@
     initHeader();
     initMobileMenu();
     initReveal();
+    initCardVideo();
     initYear();
   }
 

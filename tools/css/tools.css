@@ -337,14 +337,63 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 .card--feature {
   grid-column: 1 / -1;
   min-height: 300px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(24px, 4vw, 52px);
+  padding: clamp(24px, 3.4vw, 44px);
   background:
     radial-gradient(700px 340px at 12% 0%, rgba(94, 234, 212, 0.18), transparent 60%),
     linear-gradient(150deg, var(--bg-2), var(--bg-0) 75%);
   border-color: var(--border-strong);
 }
-.card--feature .card__body { max-width: 560px; }
+.card--feature .card__body { max-width: 560px; order: 1; }
 .card--feature .card__title { font-size: clamp(26px, 4vw, 38px); }
 .card--feature .card__text { font-size: 17px; }
+
+/* Иллюстрация-видео внутри выделенной карточки */
+.card__media {
+  position: relative;
+  order: 2;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-deep);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  isolation: isolate;
+}
+.card__media video,
+.card__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Лёгкий глянец и тёмный нижний край, чтобы видео «сидело» в макете */
+.card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(6, 31, 26, 0.10) 0%, transparent 30%, rgba(6, 31, 26, 0.34) 100%),
+    radial-gradient(120% 90% at 50% 0%, transparent 55%, rgba(6, 31, 26, 0.42) 100%);
+}
+.card__media-glow {
+  position: absolute;
+  inset: auto -20% -40% -20%;
+  height: 70%;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(60% 100% at 50% 100%, var(--accent-soft), transparent 70%);
+}
+.card--feature:hover .card__media {
+  border-color: var(--accent-light);
+}
+.card--feature:hover .card__video { transform: scale(1.03); }
+.card__video { transition: transform 0.6s var(--ease); }
 
 .card__badge {
   display: inline-flex;
@@ -421,6 +470,28 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 .cinema-poster__label strong { display: block; font-size: 20px; }
 .cinema-poster__label span { color: var(--accent-light); font-size: 14px; }
 
+/* Вариант постера с фоновым зацикленным видео вместо статичной картинки */
+.cinema-poster--video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+.cinema-poster__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Вместо полос развёртки — мягкий градиент снизу для читаемости подписи */
+.cinema-poster--video::after {
+  background: linear-gradient(180deg, rgba(6, 31, 26, 0.04) 0%, transparent 38%, rgba(6, 31, 26, 0.78) 100%);
+  opacity: 1;
+}
+.cinema-poster--video .cinema-poster__label { z-index: 2; }
+
 .features { padding-block: clamp(16px, 4vw, 40px) clamp(60px, 8vw, 100px); }
 .features__grid {
   display: grid;
@@ -480,6 +551,7 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 @media (max-width: 960px) {
   .cinema-hero__inner { grid-template-columns: 1fr; }
   .cinema-poster { max-width: 340px; }
+  .cinema-poster--video { max-width: 100%; }
 }
 
 @media (max-width: 860px) {
@@ -502,6 +574,14 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
   .nav__list { flex-direction: column; align-items: stretch; gap: 4px; }
   .nav__link { padding: 12px 0; font-size: 17px; }
   .nav__cta { margin-top: 14px; }
+}
+
+@media (max-width: 780px) {
+  /* На узких экранах выделенная карточка идёт в один столбец,
+     а видео-иллюстрация поднимается наверх. */
+  .card--feature { grid-template-columns: 1fr; }
+  .card--feature .card__media { order: 1; width: 100%; }
+  .card--feature .card__body { order: 2; max-width: none; }
 }
 
 @media (max-width: 520px) {

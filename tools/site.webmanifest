@@ -1,0 +1,28 @@
+{
+  "name": "Riool Tools — полезные инструменты",
+  "short_name": "Riool Tools",
+  "description": "Полезные веб-инструменты от Riool: личный кинотеатр и другие проекты",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#061f1a",
+  "theme_color": "#0a3d2e",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "images/favicon-32.png?v=2",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon-180.png?v=2",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon-512.png?v=2",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
