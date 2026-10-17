@@ -1,5 +1,5 @@
 # ==========================================================================
-# Прокси к Jellyfin для публичного кинотеатра.
+# Прокси к Jellyfin для публичного кинотеатра (жёсткий allowlist).
 #
 # Этот файл — ШАБЛОН. При старте контейнера entrypoint.sh подставляет вместо
 # __JELLYFIN_TOKEN__ реальный токен из переменной окружения и кладёт результат
@@ -7,9 +7,28 @@
 #
 # Смысл: браузер никогда не видит токен Jellyfin. Он обращается к нашему
 # домену (/jf/...), а nginx добавляет заголовок авторизации сам.
+#
+# БЕЗОПАСНОСТЬ: проксируем НЕ весь API Jellyfin, а только те эндпоинты, что
+# реально нужны плееру каталога:
+#   POST /jf/Items/{id}/PlaybackInfo      — получить источник воспроизведения
+#   GET  /jf/Videos/{id}/stream           — прямая раздача совместимого файла
+#   GET  /jf/videos/{id}/...              — HLS-транскод (master/main.m3u8, .ts)
+# Всё прочее под /jf/ (веб-UI, /Users, /System/*, /Library/*, ...) → 404,
+# чтобы гость кинотеатра не мог дёргать административные ручки Jellyfin.
 # ==========================================================================
-location /jf/ {
-    proxy_pass         http://riool-jellyfin:8096/;
+
+# --- Разрешённые эндпоинты плеера -----------------------------------------
+location ~ "^/jf/(?:Items/[A-Fa-f0-9]{32}/PlaybackInfo|Videos/[A-Fa-f0-9]{32}/stream(?:\.[A-Za-z0-9]+)?|videos/[A-Fa-f0-9-]{32,36}/[A-Za-z0-9_./-]+)$" {
+    # Анти-хотлинкинг/CSRF: запрос должен идти со страницы нашего сайта
+    # (пустой referer разрешён — прямой заход, native-HLS). $referer_ok
+    # определён в nginx-container.conf.
+    if ($referer_ok = 0) { return 403; }
+
+    # Отрезаем префикс /jf, чтобы запрос ушёл в Jellyfin как /Items/... и т.п.
+    # (в location по регулярке proxy_pass не может содержать URI-часть).
+    rewrite ^/jf(/.*)$ $1 break;
+
+    proxy_pass         http://riool-jellyfin:8096;
     proxy_http_version 1.1;
 
     proxy_set_header   Host              $host;
@@ -20,15 +39,18 @@ location /jf/ {
     # Токен не-админского пользователя Jellyfin: только на сервере.
     proxy_set_header   Authorization "MediaBrowser Token=\"__JELLYFIN_TOKEN__\", Client=\"riool-web\", Device=\"browser\", DeviceId=\"riool-web-1\", Version=\"1.0.0\"";
 
-    # Jellyfin зашивает ApiKey=<токен> в ссылки внутри HLS-плейлистов.
-    # Токен на клиент отдавать нельзя, поэтому вырезаем его из тела ответа
-    # (авторизуемся всё равно заголовком выше). Плейлисты не сжаты, так что
-    # sub_filter работает; Accept-Encoding пустой — на случай gzip.
+    # Jellyfin зашивает ApiKey=<токен> в ссылки внутри HLS-плейлистов и в
+    # PlaybackInfo (JSON). Токен на клиент отдавать нельзя, поэтому вырезаем
+    # его из тела ответа (авторизуемся всё равно заголовком выше).
+    # Плейлисты/JSON не сжаты (Accept-Encoding пуст), так что sub_filter
+    # работает; покрываем и m3u8, и application/json.
     proxy_set_header   Accept-Encoding   "";
-    sub_filter_types   application/vnd.apple.mpegurl application/x-mpegurl;
+    sub_filter_types   application/vnd.apple.mpegurl application/x-mpegurl application/json;
     sub_filter_once    off;
     sub_filter         "&ApiKey=__JELLYFIN_TOKEN__" "";
     sub_filter         "?ApiKey=__JELLYFIN_TOKEN__" "?";
+    # «Голый» токен (в т.ч. отдельным полем/параметром PlaybackInfo) — вырезаем.
+    sub_filter         "__JELLYFIN_TOKEN__" "";
 
     # Видеопоток: не буферизуем, длинные таймауты, без лимита на тело
     proxy_buffering        off;
@@ -36,4 +58,9 @@ location /jf/ {
     proxy_read_timeout     3600s;
     proxy_send_timeout     3600s;
     client_max_body_size   0;
+}
+
+# --- Всё остальное под /jf/ — запрещено ------------------------------------
+location /jf/ {
+    return 404;
 }
