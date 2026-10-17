@@ -1,0 +1,39 @@
+# ==========================================================================
+# Прокси к Jellyfin для публичного кинотеатра.
+#
+# Этот файл — ШАБЛОН. При старте контейнера entrypoint.sh подставляет вместо
+# __JELLYFIN_TOKEN__ реальный токен из переменной окружения и кладёт результат
+# в /etc/nginx/conf.d/jellyfin.inc, который подключается внутри server{}.
+#
+# Смысл: браузер никогда не видит токен Jellyfin. Он обращается к нашему
+# домену (/jf/...), а nginx добавляет заголовок авторизации сам.
+# ==========================================================================
+location /jf/ {
+    proxy_pass         http://riool-jellyfin:8096/;
+    proxy_http_version 1.1;
+
+    proxy_set_header   Host              $host;
+    proxy_set_header   X-Real-IP         $remote_addr;
+    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+
+    # Токен не-админского пользователя Jellyfin: только на сервере.
+    proxy_set_header   Authorization "MediaBrowser Token=\"__JELLYFIN_TOKEN__\", Client=\"riool-web\", Device=\"browser\", DeviceId=\"riool-web-1\", Version=\"1.0.0\"";
+
+    # Jellyfin зашивает ApiKey=<токен> в ссылки внутри HLS-плейлистов.
+    # Токен на клиент отдавать нельзя, поэтому вырезаем его из тела ответа
+    # (авторизуемся всё равно заголовком выше). Плейлисты не сжаты, так что
+    # sub_filter работает; Accept-Encoding пустой — на случай gzip.
+    proxy_set_header   Accept-Encoding   "";
+    sub_filter_types   application/vnd.apple.mpegurl application/x-mpegurl;
+    sub_filter_once    off;
+    sub_filter         "&ApiKey=__JELLYFIN_TOKEN__" "";
+    sub_filter         "?ApiKey=__JELLYFIN_TOKEN__" "?";
+
+    # Видеопоток: не буферизуем, длинные таймауты, без лимита на тело
+    proxy_buffering        off;
+    proxy_request_buffering off;
+    proxy_read_timeout     3600s;
+    proxy_send_timeout     3600s;
+    client_max_body_size   0;
+}

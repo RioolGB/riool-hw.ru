@@ -9,6 +9,21 @@ set -e
 
 echo "[entrypoint] nginx -> :80, node(form) -> ${PORT:-3000}, node(menstr) -> ${MENSTR_PORT:-3110}"
 
+# --- Прокси к Jellyfin: генерируем include для nginx из шаблона ---
+# Токен берём из переменной окружения и подставляем в заголовок Authorization,
+# чтобы он никогда не попадал в браузер. Файл создаётся ВСЕГДА (иначе nginx
+# упадёт на include).
+mkdir -p /etc/nginx/conf.d
+if [ -n "${JELLYFIN_TOKEN:-}" ]; then
+    sed "s|__JELLYFIN_TOKEN__|${JELLYFIN_TOKEN}|g" \
+        /etc/nginx/jellyfin.inc.template > /etc/nginx/conf.d/jellyfin.inc
+    echo "[entrypoint] Jellyfin-прокси /jf/ включён"
+else
+    printf 'location /jf/ {\n    return 503 "Jellyfin not configured\\n";\n}\n' \
+        > /etc/nginx/conf.d/jellyfin.inc
+    echo "[entrypoint] JELLYFIN_TOKEN не задан — /jf/ отключён"
+fi
+
 # nginx работает на переднем плане демона, но отдельным процессом:
 # -g 'daemon off;' не даёт ему разветвиться и завершиться
 nginx -g 'daemon off;' &

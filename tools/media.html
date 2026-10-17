@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a3d2e">
+  <title>Каталог — Riool Cinema</title>
+  <meta name="description" content="Публичный онлайн-кинотеатр Riool: домашняя коллекция фильмов и сериалов, структура папок сохранена.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://tools.riool-hw.ru/media.html">
+
+  <!-- ============ Icons (как на основном сайте riool-hw.ru) ============ -->
+  <link rel="icon" href="images/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="icon" href="images/favicon-32.png?v=2" sizes="32x32" type="image/png">
+  <link rel="icon" href="images/favicon-512.png?v=2" sizes="512x512" type="image/png">
+  <link rel="apple-touch-icon" href="images/favicon-180.png?v=2">
+  <link rel="manifest" href="site.webmanifest?v=2">
+
+  <!-- ============ Fonts ============ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
+
+  <link rel="stylesheet" href="css/tools.css?v=3">
+  <link rel="stylesheet" href="css/media.css?v=1">
+  <script>document.documentElement.classList.remove('no-js');</script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header" id="top">
+    <div class="header__inner">
+      <a class="logo" href="index.html" aria-label="Riool Tools — на главную">
+        <img class="logo__img" src="images/logo.png" alt="Riool" width="302" height="130">
+        <span class="logo__text">
+          <span class="logo__name">Riool</span>
+          <span class="logo__sub">Cinema</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="primary-nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html">Инструменты</a></li>
+          <li><a class="nav__link is-active" href="media.html" aria-current="page">Кинотеатр</a></li>
+          <li><a class="nav__link" href="https://riool-hw.ru/" target="_blank" rel="noopener">О разработчике</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm nav__cta" href="media.html" aria-current="page">
+          <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+          Каталог
+        </a>
+      </nav>
+
+      <button class="burger" type="button" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="primary-nav">
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+        <span class="burger__line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="lib">
+      <div class="container">
+        <div class="lib__head">
+          <div class="lib__intro">
+            <p class="eyebrow">Домашняя коллекция</p>
+            <h1 class="lib__title">Онлайн-кинотеатр</h1>
+            <p class="lib__stats" id="lib-stats">Загрузка каталога…</p>
+          </div>
+
+          <div class="lib__search">
+            <svg class="lib__search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+            <input id="lib-search" type="search" placeholder="Поиск по названию…" autocomplete="off" spellcheck="false" aria-label="Поиск по каталогу">
+            <button class="lib__search-clear" id="lib-search-clear" type="button" aria-label="Очистить" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <nav class="breadcrumb" id="lib-breadcrumb" aria-label="Текущий путь"></nav>
+
+        <div class="lib__body">
+          <div class="lib__status" id="lib-status">Загрузка каталога…</div>
+          <div class="lib__grid" id="lib-grid" hidden></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= PLAYER ================= -->
+  <div class="player" id="player" hidden>
+    <div class="player__backdrop" data-player-close></div>
+    <div class="player__dialog" role="dialog" aria-modal="true" aria-label="Плеер">
+      <div class="player__bar">
+        <div class="player__info">
+          <span class="player__title" id="player-title">—</span>
+          <span class="player__path" id="player-path"></span>
+        </div>
+        <button class="player__close" id="player-close" type="button" aria-label="Закрыть плеер">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="player__stage">
+        <video id="player-video" controls playsinline preload="metadata"></video>
+        <div class="player__overlay" id="player-overlay">
+          <div class="player__spinner" aria-hidden="true"></div>
+          <span class="player__overlay-text" id="player-overlay-text">Загрузка…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="footer__inner">
+      <p class="footer__copy">© <span data-year>2026</span> Вениамин Семериков (Riool). Все права защищены.</p>
+      <ul class="footer__contacts">
+        <li><a href="index.html">Инструменты</a></li>
+        <li><a href="cinema.html">О кинотеатре</a></li>
+        <li><a href="https://riool-hw.ru/" target="_blank" rel="noopener">riool-hw.ru</a></li>
+      </ul>
+      <a class="footer__to-top" href="#top" aria-label="Наверх">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+  <script src="js/tools.js?v=3" defer></script>
+  <script src="js/media.js?v=1" defer></script>
+</body>
+</html>

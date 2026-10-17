@@ -13,6 +13,7 @@ const express = require('express');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const crypto = require('crypto');
+const jellyfin = require('./jellyfin');
 
 /* --------------------------------------------------------------------------
    Конфигурация
@@ -281,6 +282,29 @@ function buildText({ name, email, message, page, userAgent, ip }) {
 // Проверка живости контейнера
 app.get('/health', (req, res) => {
   res.json({ ok: true, mailConfigured: isConfigured, uptime: Math.round(process.uptime()) });
+});
+
+/* --------------------------------------------------------------------------
+   Каталог кинотеатра (публичный, без авторизации посетителя).
+
+   Дерево строится из реальных путей файлов на диске (поле Path в Jellyfin),
+   поэтому структура папок сохраняется. Названия берутся из имён файлов и
+   папок, а не из метаданных Jellyfin. Токен Jellyfin на клиент не отдаётся —
+   видеопоток идёт через nginx-прокси /jf/ (см. deploy/nginx-container.conf).
+   -------------------------------------------------------------------------- */
+app.get('/api/media/tree', async (req, res) => {
+  if (!jellyfin.isConfigured()) {
+    return res.status(503).json({ ok: false, error: 'Каталог не настроен' });
+  }
+
+  try {
+    const data = await jellyfin.getTree();
+    res.setHeader('Cache-Control', 'public, max-age=300');
+    return res.json({ ok: true, ...data });
+  } catch (err) {
+    log('ОШИБКА каталога:', err.message);
+    return res.status(502).json({ ok: false, error: 'Каталог временно недоступен' });
+  }
 });
 
 // Приём заявки

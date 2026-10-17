@@ -44,6 +44,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY backend/package.json ./package.json
 COPY backend/server.js ./server.js
+COPY backend/jellyfin.js ./jellyfin.js
 
 # --- CycleTracker (menstr): собранный backend + node_modules + сборочный dist ---
 COPY --from=menstr-build /app/menstr/backend/dist      ./menstr/backend/dist
@@ -64,9 +65,10 @@ COPY tools /var/www/html/tools
 # Заменяем основной nginx.conf целиком: /etc/nginx/http.d/ подключается
 # внутри блока http, где директивы user/events/worker_processes запрещены
 COPY deploy/nginx-container.conf /etc/nginx/nginx.conf
+COPY deploy/jellyfin.inc.template /etc/nginx/jellyfin.inc.template
 COPY deploy/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh \
- && mkdir -p /var/lib/nginx/tmp \
+ && mkdir -p /var/lib/nginx/tmp /etc/nginx/conf.d \
  && chown -R nginx:nginx /var/lib/nginx
 
 ENV NODE_ENV=production \
