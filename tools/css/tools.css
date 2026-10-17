@@ -270,6 +270,13 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
   color: transparent;
 }
 .hero__lead { font-size: clamp(17px, 2.4vw, 21px); color: var(--text-muted); }
+.hero__poster {
+  display: block;
+  width: min(100%, 460px);
+  height: auto;
+  margin: 0 auto 24px;
+  border-radius: var(--radius);
+}
 .hero__actions { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
 
 /* --------------------------------------------------------------------------
