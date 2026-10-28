@@ -1,0 +1,118 @@
+/* Riool Tools article library */
+.article-section { padding-block: clamp(32px, 6vw, 76px); }
+.article-section--services { padding-top: 18px; }
+.article-section__action { display: flex; justify-content: center; margin-top: 30px; }
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 20px;
+}
+
+.article-card {
+  min-height: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(165deg, var(--surface-strong), rgba(255, 255, 255, 0.025));
+  transition: transform var(--dur) var(--ease), border-color var(--dur) ease, box-shadow var(--dur) var(--ease);
+  overflow: hidden;
+}
+.article-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+.article-card__link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 26px;
+  color: var(--text);
+}
+.article-card__link:hover { color: var(--text); }
+.article-card__category {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 16px;
+  padding: 6px 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent-light);
+  font-size: 13px;
+  font-weight: 600;
+}
+.article-card__title { margin-bottom: 12px; font-size: clamp(20px, 2.4vw, 25px); }
+.article-card__excerpt { color: var(--text-muted); font-size: 15px; }
+.article-card__meta { margin-top: 20px; color: var(--text-dim); font-size: 13px; }
+.article-card__read { margin-top: 18px; color: var(--accent-light); font-size: 15px; font-weight: 600; }
+
+.article-hero { padding: clamp(42px, 7vw, 80px) 0 26px; }
+.article-hero h1 { max-width: 850px; font-size: clamp(34px, 6vw, 56px); }
+.article-hero__lead { max-width: 720px; margin-top: 18px; color: var(--text-muted); font-size: clamp(17px, 2.2vw, 20px); }
+.article-listing__head { margin-bottom: 28px; }
+.article-listing__head h2 { margin-bottom: 8px; font-size: clamp(24px, 4vw, 34px); }
+.article-listing__head p { color: var(--text-muted); }
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 26px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.breadcrumbs a { color: var(--text-muted); }
+.breadcrumbs a:hover { color: var(--accent-light); }
+.breadcrumbs [aria-current="page"] { color: var(--text); }
+
+.article-section--listing { padding-top: 18px; padding-bottom: 90px; }
+.article-page { padding-block: 34px 90px; }
+.article-page__container { max-width: 960px; }
+.article-body { max-width: 790px; margin-inline: auto; }
+.article-header { margin-bottom: 30px; }
+.article-header .article-card__category { margin-bottom: 18px; }
+.article-header h1 { font-size: clamp(34px, 6vw, 54px); }
+.article-lead { margin-top: 18px; color: var(--text-muted); font-size: clamp(18px, 2.4vw, 22px); line-height: 1.5; }
+.article-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; color: var(--text-dim); font-size: 14px; }
+
+.article-toc {
+  margin: 28px 0 38px;
+  padding: 22px 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.article-toc strong { display: block; margin-bottom: 8px; color: var(--text); }
+.article-toc ol { margin: 0; padding-left: 22px; color: var(--text-muted); }
+.article-toc li + li { margin-top: 5px; }
+.article-toc a { color: var(--accent-light); }
+
+.article-content { color: var(--text-muted); font-size: 18px; line-height: 1.78; }
+.article-content h2 { margin: 38px 0 14px; color: var(--text); font-size: clamp(24px, 4vw, 32px); }
+.article-content h2:first-child { margin-top: 0; }
+.article-content p + p { margin-top: 16px; }
+.article-content ul, .article-content ol { margin: 18px 0; padding-left: 26px; }
+.article-content li + li { margin-top: 8px; }
+.article-content li::marker { color: var(--accent); }
+.article-content a { text-decoration: underline; text-underline-offset: 3px; }
+
+.article-related {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.article-related h2 { margin-bottom: 14px; font-size: 24px; }
+.article-related ul { padding-left: 22px; color: var(--text-muted); }
+.article-related li + li { margin-top: 8px; }
+
+@media (max-width: 600px) {
+  .article-card__link { padding: 22px; }
+  .article-toc { padding: 18px 20px; }
+  .article-content { font-size: 17px; }
+}

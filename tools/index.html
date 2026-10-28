@@ -4,89 +4,110 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0a3d2e">
-  <title>Riool Tools — полезные инструменты</title>
-  <meta name="description" content="Полезные веб-инструменты от Riool: личный кинотеатр и другие проекты. Тёмная тема, минимализм, чистый код.">
+  <title>Полезное — статьи и сервисы | Riool</title>
+  <meta name="description" content="Практические материалы о сайтах, заявках и цифровых сервисах. Статьи и инструменты от Вениамина Riool.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://tools.riool-hw.ru/">
-
-  <!-- ============ Icons (как на основном сайте riool-hw.ru) ============ -->
   <link rel="icon" href="images/favicon.svg?v=2" type="image/svg+xml">
   <link rel="icon" href="images/favicon-32.png?v=2" sizes="32x32" type="image/png">
   <link rel="icon" href="images/favicon-512.png?v=2" sizes="512x512" type="image/png">
   <link rel="apple-touch-icon" href="images/favicon-180.png?v=2">
   <link rel="manifest" href="site.webmanifest?v=2">
-
-  <!-- ============ Fonts ============ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
-
   <link rel="stylesheet" href="css/tools.css?v=5">
+  <link rel="stylesheet" href="css/articles.css?v=1">
   <script>document.documentElement.classList.remove('no-js');</script>
 </head>
-
 <body>
   <a class="skip-link" href="#main">Перейти к основному содержанию</a>
-
-  <!-- ================= HEADER ================= -->
   <header class="site-header" id="top">
     <div class="header__inner">
-      <a class="logo" href="index.html" aria-label="Riool Tools — на главную">
+      <a class="logo" href="/" aria-label="Riool — на главную раздела">
         <img class="logo__img" src="images/logo.png" alt="Riool" width="302" height="130">
-        <span class="logo__text">
-          <span class="logo__name">Riool</span>
-          <span class="logo__sub">Tools</span>
-        </span>
+        <span class="logo__text"><span class="logo__name">Riool</span><span class="logo__sub">Полезное</span></span>
       </a>
-
       <nav class="nav" id="primary-nav" aria-label="Основная навигация">
         <ul class="nav__list">
-          <li><a class="nav__link is-active" href="index.html" aria-current="page">Инструменты</a></li>
-          <li><a class="nav__link" href="media.html">Кинотеатр</a></li>
+          <li><a class="nav__link is-active" href="/" aria-current="page">Полезное</a></li>
+          <li><a class="nav__link" href="/articles/">Статьи</a></li>
+          <li><a class="nav__link" href="#services">Сервисы</a></li>
           <li><a class="nav__link" href="https://riool-hw.ru/" target="_blank" rel="noopener">О разработчике</a></li>
         </ul>
-        <a class="btn btn--primary btn--sm nav__cta" href="media.html">
-          <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/></svg>
-          Мой кинотеатр
-        </a>
+        <a class="btn btn--primary btn--sm nav__cta" href="/media.html">Мой кинотеатр</a>
       </nav>
-
       <button class="burger" type="button" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="primary-nav">
-        <span class="burger__line"></span>
-        <span class="burger__line"></span>
-        <span class="burger__line"></span>
+        <span class="burger__line"></span><span class="burger__line"></span><span class="burger__line"></span>
       </button>
     </div>
   </header>
 
   <main id="main">
-    <!-- ================= HERO ================= -->
     <section class="hero">
       <div class="container hero__inner">
-        <img class="hero__poster reveal" src="tools-poster.png?v=2" alt="Riool Tools — сервисы и инструменты" width="920" height="513">
-        <h1 class="hero__title reveal" style="--reveal-delay:80ms">Полезные инструменты</h1>
+        <img class="hero__poster reveal" src="tools-poster.png?v=2" alt="Иллюстрация к разделу полезных материалов" width="920" height="513">
+        <h1 class="hero__title reveal" style="--reveal-delay:80ms">Полезное</h1>
         <p class="hero__lead reveal" style="--reveal-delay:160ms">
-          Небольшие сервисы и эксперименты, сделанные для себя и не только.
-          Всё работает прямо с домашнего сервера — без облаков и лишних подписок.
+          Практические материалы о сайтах, заявках и цифровых сервисах — коротко, по делу и с примерами.
         </p>
+        <div class="hero__actions reveal" style="--reveal-delay:240ms">
+          <a class="btn btn--primary" href="/articles/">Читать статьи</a>
+          <a class="btn btn--ghost" href="#services">Открыть сервисы</a>
+        </div>
       </div>
     </section>
 
-    <!-- ================= ИНСТРУМЕНТЫ ================= -->
-    <section class="tools" id="tools">
+    <section class="tools article-section" id="articles" aria-labelledby="articles-title">
       <div class="container">
         <div class="tools__head reveal">
-          <p class="eyebrow">Коллекция</p>
-          <h2>Сервисы и инструменты</h2>
-          <p>Раздел растёт постепенно. Ниже — то, что уже доступно, и то, что скоро появится.</p>
+          <p class="eyebrow">База знаний</p>
+          <h2 id="articles-title">Материалы о сайтах и автоматизации</h2>
+          <p>Разбираем, как выбрать формат сайта, подготовить его к запуску и выстроить работу с заявками.</p>
         </div>
+        <div class="article-grid">
+          <article class="article-card reveal">
+            <a class="article-card__link" href="/articles/landing-or-multipage/">
+              <span class="article-card__category">Структура сайта</span>
+              <h3 class="article-card__title">Лендинг или многостраничный сайт: что выбрать?</h3>
+              <p class="article-card__excerpt">Сопоставьте формат сайта с предложениями, вопросами клиентов и тем, как люди будут искать информацию.</p>
+              <span class="article-card__meta">28 октября 2026 · 2 минуты</span>
+            </a>
+          </article>
+          <article class="article-card reveal" style="--reveal-delay:80ms">
+            <a class="article-card__link" href="/articles/prepare-for-launch/">
+              <span class="article-card__category">Подготовка к запуску</span>
+              <h3 class="article-card__title">Что подготовить перед запуском сайта</h3>
+              <p class="article-card__excerpt">Практичный список материалов и решений, которые помогают пройти путь от черновика до публикации.</p>
+              <span class="article-card__meta">28 октября 2026 · 2 минуты</span>
+            </a>
+          </article>
+          <article class="article-card reveal" style="--reveal-delay:160ms">
+            <a class="article-card__link" href="/articles/keep-website-leads/">
+              <span class="article-card__category">Заявки и автоматизация</span>
+              <h3 class="article-card__title">Как не терять заявки с сайта</h3>
+              <p class="article-card__excerpt">Проверьте путь заявки: от формы на странице до уведомления, хранения и ответа клиенту.</p>
+              <span class="article-card__meta">28 октября 2026 · 2 минуты</span>
+            </a>
+          </article>
+        </div>
+        <div class="article-section__action">
+          <a class="btn btn--ghost" href="/articles/">Все статьи</a>
+        </div>
+      </div>
+    </section>
 
+    <section class="tools article-section article-section--services" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <div class="tools__head reveal">
+          <p class="eyebrow">Сервисы</p>
+          <h2 id="services-title">Инструменты и проекты</h2>
+          <p>Отдельные сервисы, которыми можно пользоваться прямо в браузере.</p>
+        </div>
         <div class="tools__grid">
-          <!-- Выделенная карточка: кинотеатр -->
           <article class="card card--feature reveal">
             <div class="card__media">
-              <video class="card__video" autoplay muted loop playsinline preload="auto"
-                     aria-hidden="true" tabindex="-1">
+              <video class="card__video" autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
                 <source src="media/cinema_cart.mp4" type="video/mp4">
               </video>
               <span class="card__media-glow" aria-hidden="true"></span>
@@ -94,40 +115,11 @@
             <div class="card__body">
               <span class="card__badge"><span class="dot" aria-hidden="true"></span>Личный онлайн-кинотеатр</span>
               <h3 class="card__title">Мой кинотеатр</h3>
-              <p class="card__text">
-                Вся моя коллекция фильмов — здесь, в одном месте. Выбирайте фильм, включайте
-                и смотрите прямо в браузере, с любого устройства и в любом месте. Без регистрации
-                в чужих сервисах и без загрузки файлов на сторонние сайты.
-              </p>
+              <p class="card__text">Домашняя коллекция фильмов и сериалов с каталогом и просмотром на разных устройствах.</p>
               <div class="card__foot">
-                <a class="btn btn--primary" href="media.html">
-                  <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-                  Смотреть
-                </a>
+                <a class="btn btn--primary" href="/media.html">Открыть каталог</a>
+                <a class="btn btn--ghost" href="/cinema.html">О проекте</a>
               </div>
-            </div>
-          </article>
-
-          <!-- Будущие инструменты -->
-          <article class="card card--soon reveal" style="--reveal-delay:80ms">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v5"/></svg>
-            </div>
-            <h3 class="card__title">Заголовок инструмента</h3>
-            <p class="card__text">Место под следующий проект. Добавляется новой карточкой — сайт уже готов к расширению.</p>
-            <div class="card__foot">
-              <span class="card__link">Скоро</span>
-            </div>
-          </article>
-
-          <article class="card card--soon reveal" style="--reveal-delay:160ms">
-            <div class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg>
-            </div>
-            <h3 class="card__title">Скоро</h3>
-            <p class="card__text">Ещё один полезный сервис в разработке.</p>
-            <div class="card__foot">
-              <span class="card__link">В работе</span>
             </div>
           </article>
         </div>
@@ -135,13 +127,13 @@
     </section>
   </main>
 
-  <!-- ================= FOOTER ================= -->
   <footer class="site-footer">
     <div class="footer__inner">
-      <p class="footer__copy">© <span data-year>2026</span> Вениамин Семериков (Riool). Все права защищены.</p>
+      <p class="footer__copy">© <span data-year>2026</span> Вениамин Семериков (Riool).</p>
       <ul class="footer__contacts">
-        <li><a href="cinema.html">О кинотеатре</a></li>
-        <li><a href="https://riool-hw.ru/" target="_blank" rel="noopener">riool-hw.ru</a></li>
+        <li><a href="/articles/">Статьи</a></li>
+        <li><a href="/cinema.html">О кинотеатре</a></li>
+        <li><a href="https://riool-hw.ru/">riool-hw.ru</a></li>
         <li><a href="https://t.me/Za_ordy" target="_blank" rel="noopener noreferrer">@Za_ordy</a></li>
       </ul>
       <a class="footer__to-top" href="#top" aria-label="Наверх">
@@ -150,49 +142,39 @@
     </div>
   </footer>
 
-  <!-- ================= LOGIN GATE ================= -->
+  <!-- ================= LOGIN GATE КИНОТЕАТРА ================= -->
   <div class="gate" id="login-gate" hidden>
     <div class="gate__backdrop" data-gate-close></div>
-
     <div class="gate__dialog" role="dialog" aria-modal="true" aria-labelledby="gate-title">
       <button class="gate__close" id="gate-close" type="button" aria-label="Закрыть">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
-
       <span class="gate__badge">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
         Доступ к кинотеатру
       </span>
-
       <h2 class="gate__title" id="gate-title">Вход в кинотеатр</h2>
       <p class="gate__text">Коллекция доступна по логину и паролю. Введите ваши данные, чтобы продолжить.</p>
-
       <form class="gate__form" id="gate-form" novalidate>
         <label class="gate__field">
           <span class="gate__label">Логин</span>
-          <input class="gate__input" id="gate-user" name="username" type="text"
-                 autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
+          <input class="gate__input" id="gate-user" name="username" type="text" autocomplete="username" autocapitalize="off" autocorrect="off" spellcheck="false" required>
         </label>
-
         <label class="gate__field">
           <span class="gate__label">Пароль</span>
           <span class="gate__pw">
-            <input class="gate__input" id="gate-pass" name="password" type="password"
-                   autocomplete="current-password" required>
+            <input class="gate__input" id="gate-pass" name="password" type="password" autocomplete="current-password" required>
             <button class="gate__pw-toggle" id="gate-pw-toggle" type="button" aria-label="Показать пароль">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </span>
         </label>
-
         <p class="gate__error" id="gate-error" role="alert" hidden></p>
-
         <button class="btn btn--primary btn--lg btn--block gate__submit" id="gate-submit" type="submit">
           <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
           <span id="gate-submit-text">Войти в кинотеатр</span>
         </button>
       </form>
-
       <p class="gate__legal">
         Доступ ограничен владельцем коллекции. Материалы доступны исключительно для личного
         ознакомительного просмотра в кругу семьи (ст. 1273 ГК РФ). Публичный показ,
@@ -200,7 +182,6 @@
       </p>
     </div>
   </div>
-
   <script src="js/tools.js?v=4" defer></script>
 </body>
 </html>
