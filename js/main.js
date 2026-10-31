@@ -58,6 +58,7 @@
       span.style.setProperty('--word-delay', (i * step) + 'ms');
       span.textContent = word;
       title.appendChild(span);
+      if (i < words.length - 1) title.appendChild(document.createTextNode(' '));
     });
 
     // Запуск анимации после первой отрисовки

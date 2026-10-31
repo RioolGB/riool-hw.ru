@@ -539,7 +539,6 @@ ul { padding: 0; list-style: none; }
     transform 0.7s var(--ease),
     filter 0.7s var(--ease);
   transition-delay: var(--word-delay, 0ms);
-  margin-right: 0.28em;
 }
 
 .hero__title.is-animated .word {
@@ -1646,10 +1645,11 @@ ul { padding: 0; list-style: none; }
 /* Планшет и меньше */
 @media (max-width: 1024px) {
   .hero__inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 48px;
   }
 
+  .hero__content { min-width: 0; }
   .hero__title { max-width: 100%; }
   .hero__lead { max-width: 100%; }
 
@@ -1718,6 +1718,8 @@ ul { padding: 0; list-style: none; }
 /* Телефоны */
 @media (max-width: 640px) {
   body { font-size: 16px; }
+
+  .hero__title { max-width: 100%; }
 
   .hero {
     min-height: auto;
