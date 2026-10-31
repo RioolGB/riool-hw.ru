@@ -1090,11 +1090,39 @@
             }
 
             .nav-contacts {
-                gap: 12px;
+                gap: 8px;
+                flex: 0 0 auto;
             }
 
             .nav-phone {
                 display: none;
+            }
+
+            .navbar .container {
+                gap: 12px;
+            }
+
+            .logo {
+                min-width: 0;
+                gap: 8px;
+                font-size: 1rem;
+            }
+
+            .logo-icon {
+                flex: 0 0 36px;
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .logo-text {
+                white-space: nowrap;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.78rem;
+                white-space: nowrap;
             }
 
             .footer .container {
@@ -1113,6 +1141,23 @@
         }
 
         @media (max-width: 480px) {
+            .navbar .container {
+                padding-right: 16px;
+                padding-left: 16px;
+            }
+
+            .cta-urgency {
+                display: block;
+                padding: 14px 16px;
+                text-align: center;
+                line-height: 1.5;
+            }
+
+            .cta-urgency strong {
+                margin-right: 3px !important;
+                margin-left: 3px !important;
+            }
+
             .hero h1 {
                 font-size: 1.65rem;
             }
@@ -1133,6 +1178,35 @@
 
             .hero-stats {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .navbar .container {
+                gap: 8px;
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+
+            .logo {
+                gap: 6px;
+                font-size: 0.875rem;
+            }
+
+            .logo-icon {
+                flex-basis: 32px;
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+
+            .nav-contacts {
+                gap: 6px;
+            }
+
+            .nav-btn {
+                padding: 8px 9px;
+                font-size: 0.68rem;
             }
         }
 
@@ -1271,7 +1345,7 @@
         <div class="container">
             <a href="#" class="logo">
                 <div class="logo-icon">⚙</div>
-                МеханизоШтук
+                <span class="logo-text">МеханизоШтук</span>
             </a>
             <div class="nav-contacts">
                 <a href="tel:+7XXXXXXXXXX" class="nav-phone">+7 (XXX) XXX-XX-XX</a>
@@ -1623,7 +1697,19 @@
             btn.style.opacity = '0.7';
             btn.disabled = true;
 
-            postToSheet(payload).then(() => {
+            postToSheet(payload).then((sent) => {
+                if (!sent) {
+                    btn.textContent = 'Не удалось отправить. Попробуйте позже';
+                    btn.style.opacity = '1';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                        btn.style.opacity = '';
+                        btn.disabled = false;
+                    }, 3000);
+                    return;
+                }
+
                 btn.textContent = '✓ Заявка отправлена!';
                 btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
                 btn.style.opacity = '1';
@@ -1691,7 +1777,17 @@
             btn.textContent = 'Отправляем...';
             btn.disabled = true;
 
-            postToSheet(payload).then(() => {
+            postToSheet(payload).then((sent) => {
+                if (!sent) {
+                    btn.textContent = 'Не удалось отправить. Попробуйте позже';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '';
+                        btn.disabled = false;
+                    }, 3000);
+                    return;
+                }
+
                 btn.textContent = '✓ Заявка отправлена!';
                 btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
 
