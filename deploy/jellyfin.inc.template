@@ -18,7 +18,7 @@
 # ==========================================================================
 
 # --- Разрешённые эндпоинты плеера -----------------------------------------
-location ~ "^/jf/(?:Items/[A-Fa-f0-9]{32}/PlaybackInfo|Videos/[A-Fa-f0-9]{32}/stream(?:\.[A-Za-z0-9]+)?|videos/[A-Fa-f0-9-]{32,36}/[A-Za-z0-9_./-]+)$" {
+location ~ "^/jf/(?:Items/(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{8}(?:-[A-Fa-f0-9]{4}){3}-[A-Fa-f0-9]{12})/PlaybackInfo|Videos/(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{8}(?:-[A-Fa-f0-9]{4}){3}-[A-Fa-f0-9]{12})/stream(?:\.[A-Za-z0-9]+)?|videos/[A-Fa-f0-9-]{32,36}/[A-Za-z0-9_./-]+)$" {
     # Анти-хотлинкинг/CSRF: запрос должен идти со страницы нашего сайта
     # (пустой referer разрешён — прямой заход, native-HLS). $referer_ok
     # определён в nginx-container.conf.
@@ -28,6 +28,11 @@ location ~ "^/jf/(?:Items/[A-Fa-f0-9]{32}/PlaybackInfo|Videos/[A-Fa-f0-9]{32}/st
     # валидна ли cookie входа (см. location = /_auth). Без сессии — 401.
     auth_request /_auth;
 
+    # set выполняется модулем rewrite, поэтому ставим его ДО rewrite с флагом
+    # break: иначе nginx прекращает обработку rewrite-директив до назначения
+    # переменной upstream.
+    set                $jellyfin_upstream riool-jellyfin;
+
     # Отрезаем префикс /jf, чтобы запрос ушёл в Jellyfin как /Items/... и т.п.
     # (в location по регулярке proxy_pass не может содержать URI-часть).
     rewrite ^/jf(/.*)$ $1 break;
@@ -36,7 +41,6 @@ location ~ "^/jf/(?:Items/[A-Fa-f0-9]{32}/PlaybackInfo|Videos/[A-Fa-f0-9]{32}/st
     # request time so a temporary DNS miss cannot prevent nginx (and every
     # site served by it) from starting.
     resolver           127.0.0.11 valid=10s ipv6=off;
-    set                $jellyfin_upstream riool-jellyfin;
     proxy_pass         http://$jellyfin_upstream:8096;
     proxy_http_version 1.1;
 
