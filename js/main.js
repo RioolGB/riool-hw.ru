@@ -552,60 +552,90 @@
     var jumping = false;
 
     function centerSlide(el, behavior) {
-      var left = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
-      track.scrollTo({ left: left, behavior: behavior || 'smooth' });
+      var trackRect = track.getBoundingClientRect();
+      var slideRect = el.getBoundingClientRect();
+      var left = track.scrollLeft + slideRect.left - trackRect.left - (track.clientWidth - slideRect.width) / 2;
+      if (behavior === 'instant') {
+        var oldBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = 'auto';
+        track.scrollTo({ left: left, behavior: 'auto' });
+        track.style.scrollBehavior = oldBehavior;
+        return;
+      }
+      track.scrollTo({ left: left, behavior: 'smooth' });
     }
-    function render(index) {
+    function render(index, visualIndex) {
       active = (index + originals.length) % originals.length;
-      originals.forEach(function (slide, i) { slide.classList.toggle('is-active', i === active); });
+      var activeVisualIndex = visualIndex == null ? active + 1 : visualIndex;
+      slides.forEach(function (slide, i) { slide.classList.toggle('is-active', i === activeVisualIndex); });
       dots.forEach(function (dot, i) { dot.setAttribute('aria-pressed', i === active ? 'true' : 'false'); });
       if (count) count.textContent = String(active + 1).padStart(2, '0') + ' / ' + String(originals.length).padStart(2, '0');
     }
     function go(index) {
       var target = ((index % originals.length) + originals.length) % originals.length;
-      render(target);
+      render(target, target + 1);
       centerSlide(originals[target]);
     }
     function step(delta) {
       if (delta > 0 && active === originals.length - 1) {
-        render(0);
+        render(0, slides.length - 1);
         centerSlide(slides[slides.length - 1]);
         return;
       }
       if (delta < 0 && active === 0) {
-        render(originals.length - 1);
+        render(originals.length - 1, 0);
         centerSlide(slides[0]);
         return;
       }
       go(active + delta);
     }
-    function settle() {
-      if (jumping) return;
-      var center = track.scrollLeft + track.clientWidth / 2;
+    function nearestSlideIndex() {
+      var trackRect = track.getBoundingClientRect();
+      var center = track.clientWidth / 2;
       var nearest = 0, distance = Infinity;
       slides.forEach(function (slide, i) {
-        var d = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
+        var slideRect = slide.getBoundingClientRect();
+        var slideCenter = slideRect.left - trackRect.left + slideRect.width / 2;
+        var d = Math.abs(slideCenter - center);
         if (d < distance) { distance = d; nearest = i; }
       });
+      return nearest;
+    }
+    function updateFromScroll() {
+      if (jumping) return;
+      var nearest = nearestSlideIndex();
+      var logicalIndex = nearest === 0 ? originals.length - 1 : nearest === slides.length - 1 ? 0 : nearest - 1;
+      render(logicalIndex, nearest);
+    }
+    function settle() {
+      if (jumping) return;
+      var nearest = nearestSlideIndex();
       if (nearest === 0 || nearest === slides.length - 1) {
         jumping = true;
         var realIndex = nearest === 0 ? originals.length - 1 : 0;
-        render(realIndex); centerSlide(originals[realIndex], 'auto');
+        render(realIndex, realIndex + 1);
+        centerSlide(originals[realIndex], 'instant');
         requestAnimationFrame(function () { jumping = false; });
-      } else render(nearest - 1);
+      } else render(nearest - 1, nearest);
     }
     if (prev) prev.addEventListener('click', function () { step(-1); });
     if (next) next.addEventListener('click', function () { step(1); });
     dots.forEach(function (dot, i) { dot.addEventListener('click', function () { go(i); }); });
     track.addEventListener('scroll', function () {
-      window.clearTimeout(timer); timer = window.setTimeout(settle, 90);
+      updateFromScroll();
+      window.clearTimeout(timer);
+      timer = window.setTimeout(settle, 180);
+    }, { passive: true });
+    track.addEventListener('scrollend', function () {
+      window.clearTimeout(timer);
+      settle();
     }, { passive: true });
     root.addEventListener('keydown', function (event) {
       if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
       if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
     });
     render(0);
-    requestAnimationFrame(function () { centerSlide(originals[0], 'auto'); });
+    requestAnimationFrame(function () { centerSlide(originals[0], 'instant'); });
   }
 
   /* ------------------------------------------------------------------

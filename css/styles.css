@@ -1814,10 +1814,10 @@ ul { padding: 0; list-style: none; }
 }
 .portfolio-carousel__track::-webkit-scrollbar { display: none; }
 .portfolio-slide {
-  flex: 0 0 min(72%, 820px); scroll-snap-align: center; scroll-snap-stop: always;
-  opacity: .52; transform: scale(.88); transition: opacity .35s var(--ease), transform .45s var(--ease);
+  flex: 0 0 min(80%, 900px); scroll-snap-align: center; scroll-snap-stop: always;
+  opacity: .46; transform: scale(.86); transition: opacity .24s var(--ease), transform .28s var(--ease);
 }
-.portfolio-slide.is-active { opacity: 1; transform: scale(1); }
+.portfolio-slide.is-active { opacity: 1; transform: scale(1.03); z-index: 1; }
 .portfolio-slide__link {
   display: block; overflow: hidden; height: 100%; color: var(--text); text-decoration: none;
   border: 1px solid var(--border); border-radius: var(--radius-lg);
@@ -1825,10 +1825,13 @@ ul { padding: 0; list-style: none; }
   box-shadow: var(--shadow-md); transition: border-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .portfolio-slide__link:hover, .portfolio-slide__link:focus-visible { border-color: var(--border-strong); box-shadow: var(--shadow-glow); color: var(--text); }
+.portfolio-slide.is-active .portfolio-slide__link { border-color: var(--border-strong); box-shadow: var(--shadow-glow); }
 .portfolio-slide__poster { aspect-ratio: 3 / 2; display: grid; place-items: center; overflow: hidden; background: #061f1a; }
 .portfolio-slide__poster img { width: 100%; height: 100%; object-fit: contain; }
-.portfolio-slide__caption { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(16px, 2.2vw, 26px); }
+.portfolio-slide__caption { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: clamp(16px, 2.2vw, 26px); }
+.portfolio-slide__details { min-width: 0; }
 .portfolio-slide__caption h3 { font-size: clamp(20px, 2.3vw, 30px); }
+.portfolio-slide__caption p { max-width: 42ch; margin-top: 5px; color: var(--text-muted); font-size: 14px; line-height: 1.4; }
 .portfolio-slide__caption span { color: var(--accent-light); font-size: 15px; font-weight: 600; white-space: nowrap; }
 .portfolio-slide__caption b { display: inline-block; margin-left: 5px; font-size: 20px; }
 .portfolio-carousel__controls { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 2.5vw, 30px); }
@@ -1844,6 +1847,11 @@ ul { padding: 0; list-style: none; }
 .portfolio-carousel__count { min-width: 54px; color: var(--text-muted); font-variant-numeric: tabular-nums; font-size: 14px; }
 .portfolio-carousel__hint { margin-top: 16px; color: var(--text-dim); text-align: center; font-size: 14px; }
 
+#portfolio-all .card__media { aspect-ratio: 3 / 2; }
+#portfolio-all .card__img { object-fit: contain; background: var(--bg-deep); }
+.all-work-card__link { display: flex; flex: 1; flex-direction: column; color: var(--text); text-decoration: none; }
+.all-work-card__link:hover { color: var(--text); }
+
 .project-detail { min-height: 70vh; padding: clamp(112px, 13vw, 156px) 0 88px; background: radial-gradient(80% 55% at 50% 0%, rgba(26,95,79,.45), transparent 70%); }
 .project-detail__eyebrow { margin-bottom: 14px; color: var(--accent); font-size: 14px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 .project-detail__title { margin-bottom: clamp(28px, 4vw, 48px); font-size: clamp(38px, 6vw, 68px); }
@@ -1858,15 +1866,16 @@ ul { padding: 0; list-style: none; }
 
 @media (max-width: 860px) {
   .portfolio-carousel__track { padding-inline: 10%; }
-  .portfolio-slide { flex-basis: 82%; }
-  .portfolio-slide__caption { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .portfolio-slide { flex-basis: 84%; }
+  .portfolio-slide__caption { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .portfolio-slide__caption p { font-size: 13px; }
   .portfolio-carousel__controls { gap: 13px; }
   .portfolio-carousel__arrow { width: 42px; height: 42px; }
   .project-detail__gallery { grid-template-columns: 1fr; }
 }
 @media (max-width: 420px) {
   .portfolio-carousel__track { padding-inline: 7%; }
-  .portfolio-slide { flex-basis: 86%; }
+  .portfolio-slide { flex-basis: 88%; }
   .portfolio-slide__caption h3 { font-size: 21px; }
   .portfolio-carousel__count { min-width: 47px; font-size: 13px; }
   .project-detail__actions { align-items: stretch; flex-direction: column; }
