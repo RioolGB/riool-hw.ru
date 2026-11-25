@@ -526,7 +526,90 @@
   }
 
   /* ------------------------------------------------------------------
-     12. Инициализация
+     12. Карусель проектов: свайп, клавиатура и циклическая прокрутка
+     ------------------------------------------------------------------ */
+  function initPortfolioCarousel() {
+    var root = $('[data-portfolio-carousel]');
+    if (!root) return;
+    var track = $('[data-carousel-track]', root);
+    var dots = $$('[data-carousel-dot]', root);
+    var count = $('[data-carousel-count]', root);
+    var prev = $('[data-carousel-prev]', root);
+    var next = $('[data-carousel-next]', root);
+    var originals = $$('.portfolio-slide', track);
+    if (originals.length < 2) return;
+
+    var firstClone = originals[0].cloneNode(true);
+    var lastClone = originals[originals.length - 1].cloneNode(true);
+    [firstClone, lastClone].forEach(function (clone) {
+      clone.classList.add('is-clone'); clone.setAttribute('aria-hidden', 'true'); clone.inert = true;
+    });
+    track.insertBefore(lastClone, originals[0]);
+    track.appendChild(firstClone);
+    var slides = $$('.portfolio-slide', track);
+    var active = 0;
+    var timer = 0;
+    var jumping = false;
+
+    function centerSlide(el, behavior) {
+      var left = el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2;
+      track.scrollTo({ left: left, behavior: behavior || 'smooth' });
+    }
+    function render(index) {
+      active = (index + originals.length) % originals.length;
+      originals.forEach(function (slide, i) { slide.classList.toggle('is-active', i === active); });
+      dots.forEach(function (dot, i) { dot.setAttribute('aria-pressed', i === active ? 'true' : 'false'); });
+      if (count) count.textContent = String(active + 1).padStart(2, '0') + ' / ' + String(originals.length).padStart(2, '0');
+    }
+    function go(index) {
+      var target = ((index % originals.length) + originals.length) % originals.length;
+      render(target);
+      centerSlide(originals[target]);
+    }
+    function step(delta) {
+      if (delta > 0 && active === originals.length - 1) {
+        render(0);
+        centerSlide(slides[slides.length - 1]);
+        return;
+      }
+      if (delta < 0 && active === 0) {
+        render(originals.length - 1);
+        centerSlide(slides[0]);
+        return;
+      }
+      go(active + delta);
+    }
+    function settle() {
+      if (jumping) return;
+      var center = track.scrollLeft + track.clientWidth / 2;
+      var nearest = 0, distance = Infinity;
+      slides.forEach(function (slide, i) {
+        var d = Math.abs(slide.offsetLeft + slide.offsetWidth / 2 - center);
+        if (d < distance) { distance = d; nearest = i; }
+      });
+      if (nearest === 0 || nearest === slides.length - 1) {
+        jumping = true;
+        var realIndex = nearest === 0 ? originals.length - 1 : 0;
+        render(realIndex); centerSlide(originals[realIndex], 'auto');
+        requestAnimationFrame(function () { jumping = false; });
+      } else render(nearest - 1);
+    }
+    if (prev) prev.addEventListener('click', function () { step(-1); });
+    if (next) next.addEventListener('click', function () { step(1); });
+    dots.forEach(function (dot, i) { dot.addEventListener('click', function () { go(i); }); });
+    track.addEventListener('scroll', function () {
+      window.clearTimeout(timer); timer = window.setTimeout(settle, 90);
+    }, { passive: true });
+    root.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+    });
+    render(0);
+    requestAnimationFrame(function () { centerSlide(originals[0], 'auto'); });
+  }
+
+  /* ------------------------------------------------------------------
+     13. Инициализация
      ------------------------------------------------------------------ */
   function init() {
     document.documentElement.classList.remove('no-js');
@@ -546,6 +629,7 @@
     initScrollProgress();
     initCursorGlow();
     initCardGlare();
+    initPortfolioCarousel();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0a3d2e">
+  <link rel="preload" as="image" href="images/portfolio/projects/doctor/poster.webp">
 
   <!-- ============ SEO ============ -->
   <title>Riool — сайты, приложения и автоматизация для бизнеса</title>
@@ -42,7 +43,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap">
 
-  <link rel="stylesheet" href="css/styles.css?v=3">
+  <link rel="stylesheet" href="css/styles.css?v=4">
   <style>.logo__img{display:block;height:44px;width:auto}@media (max-width:860px){.logo__img{height:36px}}</style>
 
   <!-- Если JS отключён — контент должен быть виден сразу -->
@@ -241,158 +242,57 @@
         <header class="section__head">
           <p class="section__eyebrow reveal">Портфолио</p>
           <h2 class="section__title reveal" id="portfolio-title">Пять проектов, которые решают задачи бизнеса</h2>
-          <p class="section__subtitle reveal">
-            Каждый проект — это не просто страница, а инструмент, который работает на вас: принимает заявки,
-            считает, записывает клиентов и отправляет данные в нужную таблицу.
-          </p>
+          <p class="section__subtitle reveal">Пять разных задач — пять проектов в деталях.</p>
         </header>
 
-        <div class="portfolio__grid">
-          <!--
-            ВАЖНО (владелец): замените заглушки на реальные работы.
-            1) Скриншоты положите в images/portfolio/ (поддерживаются jpg/png/webp/avif).
-            2) Укажите рабочие поддомены вместо *.example.com.
-            3) Обновите alt и теги под реальную задачу.
-          -->
-          <article class="card reveal" data-reveal="scale" data-delay="0">
-            <div class="card__media">
-              <img class="card__img" src="images/portfolio/project-1.jpg?v=2" alt="Лендинг нутрициолога" width="1897" height="928" loading="lazy" decoding="async">
-              <div class="card__overlay">
-                <p class="card__overlay-title">Как это работает</p>
-                <p class="card__overlay-text">Анкета с сайта сразу попадает в облачную таблицу: специалист видит контакты и цель клиента, отвечает с готовым протоколом питания.</p>
-                <ul class="card__stack">
-                  <li>Адаптивная вёрстка</li>
-                  <li>облачные таблицы API</li>
-                  <li>Интеграция формы</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Лендинг нутрициолога</h3>
-              <p class="card__text">Снижение веса и метаболическое здоровье на основе доказательной нутрициологии: клиент оставляет анкету, специалист отвечает протоколом — без диет, срывов и эзотерики.</p>
-              <ul class="card__tags">
-                <li class="tag">#лендинг</li>
-                <li class="tag">#нутрициология</li>
-                <li class="tag">#анкета</li>
-              </ul>
-              <a class="btn btn--outline card__btn" href="https://nutricion.riool-hw.ru" target="_blank" rel="noopener noreferrer">
-                Открыть
-                <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            </div>
+        <div class="portfolio-carousel" data-portfolio-carousel role="region" aria-roledescription="карусель" aria-label="Избранные проекты">
+          <div class="portfolio-carousel__viewport" data-carousel-viewport>
+            <div class="portfolio-carousel__track" data-carousel-track>
+          <article class="portfolio-slide" data-project="doctor">
+            <a class="portfolio-slide__link" href="projects/doctor.html" aria-label="Открыть проект: Врач">
+              <div class="portfolio-slide__poster"><img src="images/portfolio/projects/doctor/poster.webp" alt="Промостраница врача — постер проекта" fetchpriority="high" loading="eager" decoding="sync"></div>
+              <div class="portfolio-slide__caption"><h3>Врач</h3><span aria-hidden="true">Смотреть проект <b>↗</b></span></div>
+            </a>
           </article>
-
-          <article class="card reveal" data-reveal="scale" data-delay="100">
-            <div class="card__media">
-              <img class="card__img" src="images/portfolio/project-2.jpg" alt="Чат-бот ВКонтакте" width="1897" height="928" loading="lazy" decoding="async">
-              <div class="card__overlay">
-                <p class="card__overlay-title">Как это работает</p>
-                <p class="card__overlay-text">Бот-консультант «Игорь» ведёт диалог прямо в ВКонтакте: собирает заявки участников в облачную таблицу, распознаёт уже зарегистрированных и напоминает о конференции.</p>
-                <ul class="card__stack">
-                  <li>VK Long Poll API</li>
-                  <li>gpt-5.6-luna через ProxyAPI</li>
-                  <li>облачные таблицы</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Чат-бот ВКонтакте — регистрация на конференцию</h3>
-              <p class="card__text">Организаторы Business IT Day тратили часы на повторные ответы о программе и записи. Бот «Игорь» оформляет участников в облачную таблицу и не даёт записаться дважды.</p>
-              <ul class="card__tags">
-                <li class="tag">#чат-бот</li>
-                <li class="tag">#ВКонтакте</li>
-                <li class="tag">#регистрация</li>
-              </ul>
-              <a class="btn btn--outline card__btn" href="https://vk.com/public82327335" target="_blank" rel="noopener noreferrer">
-                Открыть
-                <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            </div>
+          <article class="portfolio-slide" data-project="nko">
+            <a class="portfolio-slide__link" href="projects/nko.html" aria-label="Открыть проект: НКО">
+              <div class="portfolio-slide__poster"><img src="images/portfolio/projects/nko/poster.webp" alt="Сайт для некоммерческой организации — постер проекта" loading="eager" decoding="sync"></div>
+              <div class="portfolio-slide__caption"><h3>НКО</h3><span aria-hidden="true">Смотреть проект <b>↗</b></span></div>
+            </a>
           </article>
-
-          <article class="card reveal" data-reveal="scale" data-delay="200">
-            <div class="card__media">
-              <img class="card__img" src="images/portfolio/project-3.jpg" alt="Стоматологический калькулятор" width="1897" height="928" loading="lazy" decoding="async">
-              <div class="card__overlay">
-                <p class="card__overlay-title">Как это работает</p>
-                <p class="card__overlay-text">Врач находит услуги по категориям или поиску, задаёт количество — итог к оплате пересчитывается мгновенно. Прайс берётся с Яндекс Диска или из своего файла .xlsx.</p>
-                <ul class="card__stack">
-                  <li>Электронный прайс (xlsx / Яндекс Диск)</li>
-                  <li>План лечения и скидки</li>
-                  <li>Экспорт и печать</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Стоматологический калькулятор</h3>
-              <p class="card__text">Администраторы клиники считали лечение вручную и каждый раз переспрашивали цены. Нужен был калькулятор, который собирает план и сразу показывает итог к оплате.</p>
-              <ul class="card__tags">
-                <li class="tag">#калькулятор</li>
-                <li class="tag">#стоматология</li>
-                <li class="tag">#план лечения</li>
-              </ul>
-              <a class="btn btn--outline card__btn" href="https://stoma-demo.riool-hw.ru" target="_blank" rel="noopener noreferrer">
-                Открыть
-                <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            </div>
+          <article class="portfolio-slide" data-project="nutritionist">
+            <a class="portfolio-slide__link" href="projects/nutritionist.html" aria-label="Открыть проект: Нутрициолог">
+              <div class="portfolio-slide__poster"><img src="images/portfolio/projects/nutritionist/poster.webp" alt="Сайт нутрициолога — постер проекта" loading="eager" decoding="sync"></div>
+              <div class="portfolio-slide__caption"><h3>Нутрициолог</h3><span aria-hidden="true">Смотреть проект <b>↗</b></span></div>
+            </a>
           </article>
-
-          <article class="card reveal" data-reveal="scale" data-delay="300">
-            <div class="card__media">
-              <img class="card__img" src="images/portfolio/project-4.jpg" alt="Трекер менструального цикла" width="1897" height="928" loading="lazy" decoding="async">
-              <div class="card__overlay">
-                <p class="card__overlay-title">Как это работает</p>
-                <p class="card__overlay-text">Пользователь отмечает дни цикла в календаре — трекер считает день цикла и фазу, прогнозирует следующие месячные и окно овуляции, а подсказки объясняют, что происходит с организмом.</p>
-                <ul class="card__stack">
-                  <li>Календарь цикла и отметки дней</li>
-                  <li>Прогноз фаз и следующих месячных</li>
-                  <li>Статьи и советы по фазе</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Трекер менструального цикла</h3>
-              <p class="card__text">Данные цикла жили в заметках и календаре телефона: прогнозов не было, а считать фазы вручную утомительно. Нужен был сервис, который от простой отметки строит всю картину.</p>
-              <ul class="card__tags">
-                <li class="tag">#веб-приложение</li>
-                <li class="tag">#календарь</li>
-                <li class="tag">#прогнозы</li>
-              </ul>
-              <a class="btn btn--outline card__btn" href="https://menstr.riool-hw.ru" target="_blank" rel="noopener noreferrer">
-                Открыть
-                <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            </div>
+          <article class="portfolio-slide" data-project="habits">
+            <a class="portfolio-slide__link" href="projects/habits.html" aria-label="Открыть проект: Привычки">
+              <div class="portfolio-slide__poster"><img src="images/portfolio/projects/habits/poster.webp" alt="Трекер привычек — постер проекта" loading="eager" decoding="sync"></div>
+              <div class="portfolio-slide__caption"><h3>Привычки</h3><span aria-hidden="true">Смотреть проект <b>↗</b></span></div>
+            </a>
           </article>
-
-          <article class="card reveal" data-reveal="scale" data-delay="400">
-            <div class="card__media">
-              <img class="card__img" src="images/portfolio/project-5.jpg" alt="Трекер привычек" width="1897" height="928" loading="lazy" decoding="async">
-              <div class="card__overlay">
-                <p class="card__overlay-title">Как это работает</p>
-                <p class="card__overlay-text">Пользователь отмечает выполнение привычек за день и сразу видит серию и прогресс. Календарь показывает заполненность месяца, а статистика — проценты за 7, 30 и 90 дней с графиками.</p>
-                <ul class="card__stack">
-                  <li>Отметки и серии выполнения</li>
-                  <li>Календарь с историей дня</li>
-                  <li>Статистика 7 / 30 / 90 дней</li>
-                </ul>
-              </div>
-            </div>
-            <div class="card__body">
-              <h3 class="card__title">Трекер привычек</h3>
-              <p class="card__text">Пет-проект по техническому заданию: аккаунт, список привычек с напоминаниями, календарь, топ привычек и экспорт данных в CSV.</p>
-              <ul class="card__tags">
-                <li class="tag">#привычки</li>
-                <li class="tag">#статистика</li>
-                <li class="tag">#календарь</li>
-              </ul>
-              <a class="btn btn--outline card__btn" href="https://habit.riool-hw.ru" target="_blank" rel="noopener noreferrer">
-                Открыть
-                <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-            </div>
+          <article class="portfolio-slide" data-project="plastering">
+            <a class="portfolio-slide__link" href="projects/plastering.html" aria-label="Открыть проект: Штукатурка">
+              <div class="portfolio-slide__poster"><img src="images/portfolio/projects/plastering/poster.webp" alt="Сайт механизированной штукатурки — постер проекта" loading="eager" decoding="sync"></div>
+              <div class="portfolio-slide__caption"><h3>Штукатурка</h3><span aria-hidden="true">Смотреть проект <b>↗</b></span></div>
+            </a>
           </article>
+            </div>
+          </div>
+          <div class="portfolio-carousel__controls">
+            <button class="portfolio-carousel__arrow" type="button" data-carousel-prev aria-label="Предыдущий проект">←</button>
+            <div class="portfolio-carousel__dots" role="group" aria-label="Выбрать проект">
+              <button type="button" class="portfolio-carousel__dot" data-carousel-dot="0" aria-label="Проект: Врач" aria-pressed="true"></button>
+              <button type="button" class="portfolio-carousel__dot" data-carousel-dot="1" aria-label="Проект: НКО" aria-pressed="false"></button>
+              <button type="button" class="portfolio-carousel__dot" data-carousel-dot="2" aria-label="Проект: Нутрициолог" aria-pressed="false"></button>
+              <button type="button" class="portfolio-carousel__dot" data-carousel-dot="3" aria-label="Проект: Привычки" aria-pressed="false"></button>
+              <button type="button" class="portfolio-carousel__dot" data-carousel-dot="4" aria-label="Проект: Штукатурка" aria-pressed="false"></button>
+            </div>
+            <span class="portfolio-carousel__count" data-carousel-count aria-live="polite">01 / 05</span>
+            <button class="portfolio-carousel__arrow" type="button" data-carousel-next aria-label="Следующий проект">→</button>
+          </div>
+          <p class="portfolio-carousel__hint">Листайте или используйте стрелки</p>
         </div>
 
         <div class="portfolio__more reveal" data-reveal="scale">
@@ -534,6 +434,6 @@
   </div>
 
   <script src="js/protect.js" defer></script>
-  <script src="js/main.js?v=3" defer></script>
+  <script src="js/main.js?v=4" defer></script>
 </body>
 </html>
