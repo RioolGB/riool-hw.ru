@@ -36,9 +36,15 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 минут
    ТОЛЬКО через заголовок Authorization: MediaBrowser Token="…" (ни api_key в
    query, ни X-Emby-Token не работают). Без токена заголовок всё равно нужен —
    по нему Jellyfin выдаёт токен при входе по логину/паролю. */
-function clientHeader(token) {
+const WEB_DEVICE_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function isWebDeviceId(deviceId) {
+  return typeof deviceId === 'string' && WEB_DEVICE_ID_RE.test(deviceId);
+}
+
+function clientHeader(token, deviceId = 'riool-web-1') {
   return 'MediaBrowser ' + (token ? 'Token="' + token + '", ' : '') +
-    'Client="riool-web", Device="browser", DeviceId="riool-web-1", Version="1.0.0"';
+    'Client="riool-web", Device="browser", DeviceId="' + deviceId + '", Version="1.0.0"';
 }
 
 function authHeader() {
@@ -190,13 +196,14 @@ function isConfigured() {
 /* --- Вход посетителя по логину/паролю Jellyfin -----------------------------
    Возвращает { token, user } либо бросает ошибку с .status = 401 при неверных
    данных. Пароль нигде не логируется. */
-async function authenticate(username, password) {
+async function authenticate(username, password, deviceId = 'riool-web-1') {
+  if (!isWebDeviceId(deviceId)) throw new TypeError('Некорректный идентификатор браузера');
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 15000);
   try {
     const res = await fetch(JELLYFIN_URL + '/Users/AuthenticateByName', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: clientHeader('') },
+      headers: { 'Content-Type': 'application/json', Authorization: clientHeader('', deviceId) },
       body: JSON.stringify({ Username: String(username || ''), Pw: String(password || '') }),
       signal: ctrl.signal
     });
@@ -226,13 +233,13 @@ async function authenticate(username, password) {
 
 /* --- Проверка токена сессии посетителя ------------------------------------
    Возвращает объект пользователя или null, если токен пустой/недействителен. */
-async function validateToken(token) {
+async function validateToken(token, deviceId = 'riool-web-1') {
   if (!token) return null;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 10000);
   try {
     const res = await fetch(JELLYFIN_URL + '/Users/Me', {
-      headers: { Authorization: clientHeader(token) },
+      headers: { Authorization: clientHeader(token, deviceId) },
       signal: ctrl.signal
     });
     if (!res.ok) return null;
@@ -244,4 +251,4 @@ async function validateToken(token) {
   }
 }
 
-module.exports = { getTree, isConfigured, buildTree, authenticate, validateToken };
+module.exports = { getTree, isConfigured, buildTree, authenticate, validateToken, clientHeader, isWebDeviceId };

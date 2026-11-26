@@ -130,6 +130,17 @@
 
     function goCinema() { window.location.href = 'media.html'; }
 
+    function getCinemaDeviceId() {
+      var deviceApi = window.RioolCinemaDevice;
+      if (!deviceApi) return null; // Server will issue a per-login random ID.
+      try {
+        return deviceApi.getId(window.localStorage, window.crypto);
+      } catch (err) {
+        // Private browsing policies may disable localStorage; keep a random ID in memory.
+        try { return deviceApi.getId(null, window.crypto); } catch (randomError) { return null; }
+      }
+    }
+
     // Проверяем сессию: если уже вошли — сразу в каталог, иначе показываем форму.
     function enterCinema(e) {
       if (e) e.preventDefault();
@@ -182,7 +193,11 @@
       fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ username: u, password: p })
+        body: JSON.stringify({
+          username: u,
+          password: p,
+          deviceId: getCinemaDeviceId()
+        })
       })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
         .then(function (res) {

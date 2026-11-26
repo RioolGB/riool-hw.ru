@@ -61,6 +61,7 @@ const config = {
 
   // Сессия кинотеатра: токен Jellyfin лежит в HttpOnly-cookie (JS его не видит)
   cookieName: 'riool_jf',
+  deviceCookieName: 'riool_jf_device',
   sessionMaxAgeSec: 30 * 24 * 60 * 60 // 30 дней
 };
 
@@ -338,13 +339,20 @@ function sessionToken(req) {
   return cookies[config.cookieName] || '';
 }
 
+function sessionDeviceId(req) {
+  const cookies = parseCookies(req.get('cookie') || '');
+  const deviceId = cookies[config.deviceCookieName] || '';
+  // Старые браузерные сессии не содержат отдельную cookie; сохраняем им прежний ID.
+  return jellyfin.isWebDeviceId(deviceId) ? deviceId : 'riool-web-1';
+}
+
 /* Проверка токена с коротким кэшем. true — токен валиден. */
-async function isSessionValid(token) {
+async function isSessionValid(token, deviceId) {
   if (!token) return false;
   const cached = authCache.get(token);
   if (cached && cached.expires > Date.now()) return cached.ok;
 
-  const user = await jellyfin.validateToken(token);
+  const user = await jellyfin.validateToken(token, deviceId);
   const ok = Boolean(user);
   authCache.set(token, { ok, expires: Date.now() + AUTH_CACHE_MS });
   return ok;
@@ -393,14 +401,26 @@ app.get('/api/media/tree', async (req, res) => {
 app.post('/api/login', loginRateLimit, async (req, res) => {
   const username = String(req.body?.username ?? req.body?.Username ?? '').trim();
   const password = String(req.body?.password ?? req.body?.Pw ?? '');
+  const requestedDeviceId = req.body?.deviceId ?? req.body?.DeviceId;
+  if (requestedDeviceId != null && !jellyfin.isWebDeviceId(requestedDeviceId)) {
+    return res.status(400).json({ ok: false, error: 'Не удалось определить устройство. Обновите страницу и попробуйте снова.' });
+  }
+  const deviceId = requestedDeviceId || crypto.randomUUID();
 
   if (!username || !password) {
     return res.status(400).json({ ok: false, error: 'Введите логин и пароль.' });
   }
 
   try {
-    const { token, user } = await jellyfin.authenticate(username, password);
+    const { token, user } = await jellyfin.authenticate(username, password, deviceId);
     res.cookie(config.cookieName, token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: config.sessionMaxAgeSec * 1000
+    });
+    res.cookie(config.deviceCookieName, deviceId, {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
@@ -422,13 +442,14 @@ app.post('/api/login', loginRateLimit, async (req, res) => {
 // Выход: чистим cookie
 app.post('/api/logout', (req, res) => {
   res.clearCookie(config.cookieName, { path: '/' });
+  res.clearCookie(config.deviceCookieName, { path: '/' });
   return res.json({ ok: true });
 });
 
 // Текущий статус сессии (для фронтенда)
 app.get('/api/session', async (req, res) => {
   const token = sessionToken(req);
-  if (!token || !(await isSessionValid(token))) {
+  if (!token || !(await isSessionValid(token, sessionDeviceId(req)))) {
     return res.status(401).json({ ok: false });
   }
   return res.json({ ok: true });
@@ -437,7 +458,7 @@ app.get('/api/session', async (req, res) => {
 // Внутренний эндпоинт для nginx auth_request: 204 — пускаем, 401 — нет.
 app.get('/api/authcheck', async (req, res) => {
   const token = sessionToken(req);
-  if (token && (await isSessionValid(token))) return res.status(204).end();
+  if (token && (await isSessionValid(token, sessionDeviceId(req)))) return res.status(204).end();
   return res.status(401).end();
 });
 
