@@ -402,6 +402,10 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 .card--feature:hover .card__video { transform: scale(1.03); }
 .card__video { transition: transform 0.6s var(--ease); }
 
+.specmanager-card__media { display: grid; place-items: center; }
+.specmanager-card__icon { position: relative; z-index: 3; width: min(34%, 150px); height: auto; color: #67e0bb; filter: drop-shadow(0 8px 24px rgba(46, 210, 166, .18)); }
+.specmanager-card__media::after { background: radial-gradient(70% 85% at 50% 50%, rgba(30, 125, 98, .20), transparent 100%); }
+
 .card__badge {
   display: inline-flex;
   align-items: center;

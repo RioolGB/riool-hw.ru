@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a3d2e">
+  <title>СпецМенеджер — спецификации и заявки | Riool</title>
+  <meta name="description" content="СпецМенеджер для Windows: проекты, спецификации оборудования и материалов, импорт и экспорт XLSX, заявки поставщикам.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://riool-hw.ru/projects/specmanager.html">
+  <link rel="icon" href="../images/favicon-32.png?v=2" sizes="32x32" type="image/png">
+  <link rel="stylesheet" href="../css/styles.css?v=5">
+  <style>
+    .specmanager-intro{max-width:850px;margin:-20px auto 54px;color:var(--text-muted);font-size:clamp(17px,2vw,20px);line-height:1.7}
+    .specmanager-intro strong{color:var(--text)}
+    .specmanager-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:0 auto 56px}
+    .specmanager-points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0 0 64px}
+    .specmanager-point{padding:24px;border:1px solid var(--border);border-radius:var(--radius);background:rgba(255,255,255,.035)}
+    .specmanager-point h2{margin:0 0 10px;font-size:20px}.specmanager-point p,.specmanager-point li{color:var(--text-muted);line-height:1.65}
+    .specmanager-point ul{padding-left:20px;margin:0}.specmanager-point p{margin:0}
+    .specmanager-flow{margin:0 0 66px;padding:24px;border:1px solid var(--border);border-radius:var(--radius);background:rgba(255,255,255,.025);color:var(--text-muted);font-size:17px;line-height:1.7}
+    .specmanager-gallery-caption{margin:0 0 12px;color:var(--text-muted);font-size:14px}
+    @media(max-width:700px){.specmanager-points{grid-template-columns:1fr}.specmanager-actions{align-items:stretch;flex-direction:column}.specmanager-actions .btn{width:100%;text-align:center}}
+  </style>
+  <script>document.documentElement.classList.remove('no-js');</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
+  <header class="site-header is-stuck" id="top">
+    <div class="container header__inner">
+      <a class="logo" href="../index.html" aria-label="Riool — на главную"><img class="logo__img" src="../images/logo.png" alt="Riool" width="302" height="130"></a>
+      <nav class="nav" id="primary-nav" aria-label="Основная навигация">
+        <ul class="nav__list"><li><a class="nav__link" href="../index.html#about">Обо мне</a></li><li><a class="nav__link is-active" href="../portfolio.html">Портфолио</a></li><li><a class="nav__link" href="https://tools.riool-hw.ru/" target="_blank" rel="noopener">Полезное</a></li><li><a class="nav__link" href="../index.html#contacts">Контакты</a></li></ul>
+        <a class="btn btn--primary btn--sm nav__cta" href="../index.html#contacts">Связаться со мной</a>
+      </nav>
+      <button class="burger" type="button" id="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="primary-nav"><span class="burger__line"></span><span class="burger__line"></span><span class="burger__line"></span></button>
+    </div>
+  </header>
+  <main id="main">
+    <section class="project-detail">
+      <div class="container">
+        <p class="project-detail__eyebrow">Настольное приложение · Windows</p>
+        <h1 class="project-detail__title">СпецМенеджер</h1>
+        <p class="specmanager-intro"><strong>Рабочее пространство для проектировщиков, инженеров и монтажных организаций.</strong> Программа объединяет проекты, спецификации оборудования и материалов и заявки поставщикам в одной локальной базе.</p>
+        <div class="specmanager-actions">
+          <a class="btn btn--primary btn--lg" href="https://github.com/RioolGB/riool-hw.ru/releases/download/specmanager-v0.2.7/Riool_SpecManager_Setup_0.2.9.exe">Скачать СпецМенеджер 0.2.7</a>
+          <a class="btn btn--outline btn--lg" href="https://tools.riool-hw.ru/specmanager.html">Возможности и загрузка</a>
+        </div>
+        <div class="specmanager-points" aria-label="Возможности программы">
+          <article class="specmanager-point"><h2>Проекты и спецификации</h2><p>Создавайте карточки объектов, ведите позиции с характеристиками, марками, производителями, единицами и количеством. Группируйте строки по разделам, ищите и редактируйте их.</p></article>
+          <article class="specmanager-point"><h2>Заявки поставщикам</h2><p>Отбирайте нужные позиции и формируйте отдельные заявки. Цены можно вносить вручную; приложение не придумывает стоимость, если её нет в исходных данных.</p></article>
+          <article class="specmanager-point"><h2>Импорт и экспорт XLSX</h2><p>Загружайте таблицу с предварительным просмотром и сопоставлением столбцов, затем проверяйте строки перед сохранением. Спецификации и заявки можно экспортировать в Excel.</p></article>
+          <article class="specmanager-point"><h2>Импорт PDF</h2><p>Для текстовых PDF программа находит таблицы спецификации и предлагает проверить извлечённые данные. Для сканов используется локальный OCR; распознанные поля требуют вычитки. На проверенных проектах обработаны текстовые спецификации, но это не обещает безошибочную работу с любым PDF.</p></article>
+          <article class="specmanager-point"><h2>Локальная база</h2><p>Проекты и заявки хранятся в SQLite на компьютере пользователя. Новая установка начинает с пустой базы; обновление сохраняет уже созданные данные.</p></article>
+          <article class="specmanager-point"><h2>Текущая версия</h2><p>Версия приложения 0.2.7. Установщик предназначен для Windows x64 и работает без обязательного подключения к интернету после загрузки.</p></article>
+        </div>
+        <h2 class="project-detail__gallery-title">Интерфейс программы</h2>
+        <p class="specmanager-gallery-caption">Скриншоты актуальной версии. Нажмите на изображение, чтобы открыть его в полном размере.</p>
+        <div class="project-detail__gallery">
+          <a class="project-detail__shot" href="../images/portfolio/projects/specmanager/01_overview_Riool_v2.png" target="_blank" rel="noopener" aria-label="Открыть скриншот: главный экран"><img src="../images/portfolio/projects/specmanager/01_overview_Riool_v2.png" alt="СпецМенеджер — главный экран" loading="lazy" decoding="async"></a>
+          <a class="project-detail__shot" href="../images/portfolio/projects/specmanager/02_projects_Riool_v2.png" target="_blank" rel="noopener" aria-label="Открыть скриншот: проекты"><img src="../images/portfolio/projects/specmanager/02_projects_Riool_v2.png" alt="СпецМенеджер — список проектов" loading="lazy" decoding="async"></a>
+          <a class="project-detail__shot" href="../images/portfolio/projects/specmanager/03_specification_Riool_v2_HQ.png" target="_blank" rel="noopener" aria-label="Открыть скриншот: спецификация"><img src="../images/portfolio/projects/specmanager/03_specification_Riool_v2_HQ.png" alt="СпецМенеджер — рабочая спецификация" loading="lazy" decoding="async"></a>
+          <a class="project-detail__shot" href="../images/portfolio/projects/specmanager/04_purchase_requests_Riool_v2_HQ.png" target="_blank" rel="noopener" aria-label="Открыть скриншот: заявки поставщикам"><img src="../images/portfolio/projects/specmanager/04_purchase_requests_Riool_v2_HQ.png" alt="СпецМенеджер — заявки поставщикам" loading="lazy" decoding="async"></a>
+          <a class="project-detail__shot" href="../images/portfolio/projects/specmanager/05_xlsx_import_Riool_v2_HQ_enlarged.png" target="_blank" rel="noopener" aria-label="Открыть скриншот: импорт Excel"><img src="../images/portfolio/projects/specmanager/05_xlsx_import_Riool_v2_HQ_enlarged.png" alt="СпецМенеджер — предварительный просмотр импорта XLSX" loading="lazy" decoding="async"></a>
+        </div>
+        <div class="specmanager-actions" style="margin-top:44px;margin-bottom:0">
+          <a class="btn btn--primary btn--lg" href="https://github.com/RioolGB/riool-hw.ru/releases/download/specmanager-v0.2.7/Riool_SpecManager_Setup_0.2.9.exe">Скачать СпецМенеджер 0.2.7</a>
+        </div>
+        <nav class="project-detail__actions" aria-label="Навигация по проекту">
+          <a class="btn btn--ghost" href="../portfolio.html">← Назад к работам</a>
+          <a class="btn btn--outline" href="../index.html">На главную</a>
+          <a class="btn btn--primary" href="../index.html#contacts">Связаться</a>
+        </nav>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer__inner"><p class="footer__copy">© 2026 Вениамин Семериков (Riool).</p><ul class="footer__contacts"><li><a href="tel:+79262541996">+7 (926) 254-19-96</a></li><li><a href="mailto:riool@riool.ru">riool@riool.ru</a></li><li><a href="https://t.me/Za_ordy" target="_blank" rel="noopener noreferrer">@Za_ordy</a></li></ul><a class="footer__to-top" href="#top" aria-label="Наверх">↑</a></div></footer>
+  <script src="../js/main.js?v=5" defer></script>
+</body>
+</html>
