@@ -26,6 +26,23 @@ Thumbs.db
 # Служебный документ с ТЗ (остаётся локально, в репозиторий не нужен)
 *.docx
 
+# Локальные материалы, не используемые в production-сборке сайта.
+# Видео кинотеатра в tools/media/ остается отслеживаемым.
+/Screenshots/
+/legal/
+/1791810866.png
+/1791810866_fixed.png
+/1791810866_fixed_1664x928.png
+/Untitled.jpg
+/cinema_cart.mp4
+/icon.png
+/icon1.png
+/icon11.psd
+/index.html.bak_2026-11-25
+/logo.png
+/logo1.png
+/logo2.png
+
 # Каталог сертификатов Let's Encrypt (создаётся автоматически)
 deploy/certbot/conf/*
 deploy/certbot/www/*
