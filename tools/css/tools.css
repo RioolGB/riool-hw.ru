@@ -414,10 +414,10 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 .specmanager-card__caption { animation: specmanagerCaption 5.4s ease-in-out infinite; }
 .card--feature:hover .specmanager-card__scene { filter: brightness(1.08); }
 @keyframes specmanagerRoute { to { stroke-dashoffset: -56; } }
-@keyframes specmanagerImport { 0%,5% { opacity: .08; translate: 0 0; scale: .92; } 12% { opacity: 1; } 33% { opacity: .95; translate: 116px 18px; scale: .62; } 40%,100% { opacity: 0; translate: 137px 22px; scale: .38; } }
+@keyframes specmanagerImport { 0%,5% { opacity: .58; translate: 0 0; scale: .92; } 12% { opacity: 1; } 33% { opacity: .95; translate: 116px 18px; scale: .62; } 39% { opacity: .65; translate: 132px 20px; scale: .5; } 43% { opacity: 0; translate: 137px 22px; scale: .38; } 49%,84% { opacity: .42; translate: 0 0; scale: .92; } 92%,100% { opacity: .62; translate: 0 0; scale: .92; } }
 @keyframes specmanagerProcess { 0%,27%,42%,100% { filter: none; } 34% { filter: drop-shadow(0 0 12px rgba(94,234,212,.35)); } }
 @keyframes specmanagerReady { 0%,40%,100% { opacity: .3; } 53%,80% { opacity: 1; filter: drop-shadow(0 0 7px rgba(94,234,212,.9)); } }
-@keyframes specmanagerExport { 0%,43% { opacity: 0; translate: -28px 8px; scale: .78; } 56% { opacity: 1; translate: 0 0; scale: 1; } 74% { opacity: 1; translate: 3px -3px; scale: 1.025; } 88%,100% { opacity: 0; translate: 12px -5px; scale: .9; } }
+@keyframes specmanagerExport { 0%,43% { opacity: 0; translate: -28px 8px; scale: .78; } 56% { opacity: 1; translate: 0 0; scale: 1; } 74% { opacity: 1; translate: 3px -3px; scale: 1.025; } 88%,100% { opacity: .62; translate: 0 0; scale: 1; } }
 @keyframes specmanagerCaption { 0%,45%,100% { opacity: .55; } 55%,84% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
   .specmanager-card__route,
