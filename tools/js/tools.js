@@ -98,6 +98,16 @@
     year.forEach(function (el) { el.textContent = current; });
   }
 
+  function initBackToTop() {
+    document.querySelectorAll('.footer__to-top[href="#top"]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
+    });
+  }
+
   /* --- Логин-гейт кинотеатра ------------------------------------------- */
   function initGate() {
     var gate = document.getElementById('login-gate');
@@ -228,6 +238,7 @@
     initReveal();
     initCardVideo();
     initYear();
+    initBackToTop();
     initGate();
   }
 
