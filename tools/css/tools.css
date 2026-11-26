@@ -402,9 +402,33 @@ h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; font-weight: 700; text
 .card--feature:hover .card__video { transform: scale(1.03); }
 .card__video { transition: transform 0.6s var(--ease); }
 
-.specmanager-card__media { display: grid; place-items: center; }
-.specmanager-card__icon { position: relative; z-index: 3; width: min(34%, 150px); height: auto; color: #67e0bb; filter: drop-shadow(0 8px 24px rgba(46, 210, 166, .18)); }
-.specmanager-card__media::after { background: radial-gradient(70% 85% at 50% 50%, rgba(30, 125, 98, .20), transparent 100%); }
+.specmanager-card__media { background: radial-gradient(75% 90% at 50% 55%, rgba(24,116,87,.55), transparent 75%), linear-gradient(145deg,#0a392b,#041b15); }
+.specmanager-card__scene { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; }
+.specmanager-card__route { animation: specmanagerRoute 3.6s linear infinite; }
+.specmanager-card__file { transform-box: fill-box; transform-origin: center; animation: specmanagerImport 5.4s ease-in-out infinite; }
+.specmanager-card__file--two { animation-delay: .55s; }
+.specmanager-card__file--three { animation-delay: 1.1s; }
+.specmanager-card__computer { transform-box: fill-box; transform-origin: center; animation: specmanagerProcess 5.4s ease-in-out infinite; }
+.specmanager-card__ready { transform-box: fill-box; transform-origin: center; animation: specmanagerReady 5.4s ease-in-out infinite; }
+.specmanager-card__order { transform-box: fill-box; transform-origin: center; animation: specmanagerExport 5.4s ease-in-out infinite; }
+.specmanager-card__caption { animation: specmanagerCaption 5.4s ease-in-out infinite; }
+.card--feature:hover .specmanager-card__scene { filter: brightness(1.08); }
+@keyframes specmanagerRoute { to { stroke-dashoffset: -56; } }
+@keyframes specmanagerImport { 0%,5% { opacity: .08; translate: 0 0; scale: .92; } 12% { opacity: 1; } 33% { opacity: .95; translate: 116px 18px; scale: .62; } 40%,100% { opacity: 0; translate: 137px 22px; scale: .38; } }
+@keyframes specmanagerProcess { 0%,27%,42%,100% { filter: none; } 34% { filter: drop-shadow(0 0 12px rgba(94,234,212,.35)); } }
+@keyframes specmanagerReady { 0%,40%,100% { opacity: .3; } 53%,80% { opacity: 1; filter: drop-shadow(0 0 7px rgba(94,234,212,.9)); } }
+@keyframes specmanagerExport { 0%,43% { opacity: 0; translate: -28px 8px; scale: .78; } 56% { opacity: 1; translate: 0 0; scale: 1; } 74% { opacity: 1; translate: 3px -3px; scale: 1.025; } 88%,100% { opacity: 0; translate: 12px -5px; scale: .9; } }
+@keyframes specmanagerCaption { 0%,45%,100% { opacity: .55; } 55%,84% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .specmanager-card__route,
+  .specmanager-card__file,
+  .specmanager-card__computer,
+  .specmanager-card__ready,
+  .specmanager-card__order,
+  .specmanager-card__caption { animation: none !important; }
+  .specmanager-card__file { opacity: .9 !important; translate: 0 0 !important; scale: 1 !important; }
+  .specmanager-card__order { opacity: 1 !important; translate: 0 0 !important; scale: 1 !important; }
+}
 
 .card__badge {
   display: inline-flex;
